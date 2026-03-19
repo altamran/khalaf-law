@@ -367,19 +367,11 @@ function AnalyzerPage({ systems, callApi, loading, setLoading, result, setResult
     if (!facts.trim()) { toast("⚠️ أدخل وقائع القضية"); return; }
     setLoading(true);
     const sysCtx = systems.length ? "الأنظمة المتاحة في المنصة: " + systems.map(s=>s.name).join("، ") : "";
-    // إرسال كل الأنظمة مضغوطة — كل مادة بحد أقصى 300 حرف
+    // إرسال كل الأنظمة مضغوطة
     const sysTexts = systems.map(s => {
-      const articles = s.text.split(/
-(?=المادة\s*\(?\d)/);
-      const compressed = articles.map(a => a.trim().substring(0, 300)).join("
-");
-      return `=== ${s.name} ===
-${compressed}`;
-    }).join("
-
----
-
-");
+      const compressed = s.text.substring(0, 8000);
+      return "=== " + s.name + " ===\n" + compressed;
+    }).join("\n\n---\n\n");
     const prompt = `أنت محامٍ قانوني سعودي متخصص. قدم تحليلاً قانونياً احترافياً دقيقاً باللغة العربية الفصحى.
 
 نوع القضية: ${caseType}
@@ -503,20 +495,11 @@ function DraftPage({ systems, callApi, loading, setLoading, result, setResult, m
     if (!body.trim()) { toast("⚠️ أدخل موضوع المذكرة"); return; }
     setLoading(true);
 
-    // استخرج نصوص الأنظمة المضافة كاملة
     // إرسال كل الأنظمة مضغوطة
     const sysTexts = systems.map(s => {
-      const articles = s.text.split(/
-(?=المادة\s*\(?\d)/);
-      const compressed = articles.map(a => a.trim().substring(0, 300)).join("
-");
-      return `=== ${s.name} ===
-${compressed}`;
-    }).join("
-
----
-
-");
+      const compressed = s.text.substring(0, 8000);
+      return "=== " + s.name + " ===\n" + compressed;
+    }).join("\n\n---\n\n");
 
     const styleGuide = `
 ═══ بصمة الأسلوب — التزم بها حرفياً ═══
