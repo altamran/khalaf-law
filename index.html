@@ -394,37 +394,30 @@ function SearchPage({ systems, bank }) {
     const res = [];
 
     systems.forEach(s => {
-      // بحث في اسم النظام
-      if (s.name.toLowerCase().includes(t)) {
-        res.push({ ref:"نظام — "+s.name, text:s.text.substring(0,300), bc:"rgba(184,146,42,0.1)", btc:GOLD, fullText:s.text, sysName:s.name });
-      }
-      // بحث في كل مادة على حدة
-      const lines = s.text.split("\n");
-      let currentArticle = "";
-      let currentTitle = "";
-      lines.forEach(line => {
-        const trimmed = line.trim();
-        // كشف بداية مادة جديدة
-        if (/^المادة\s*[\(（]?\d/.test(trimmed) || /^مادة\s*\d/.test(trimmed)) {
-          // احفظ المادة السابقة إذا كانت تحتوي على الكلمة المبحوثة
-          if (currentArticle && currentArticle.toLowerCase().includes(t)) {
-            res.push({ ref:"نظام — "+s.name+" — "+currentTitle, text:currentArticle.substring(0,500), bc:"rgba(184,146,42,0.1)", btc:GOLD, fullText:currentArticle, sysName:s.name });
-          }
-          currentTitle = trimmed.substring(0, 60);
-          currentArticle = trimmed + "\n";
-        } else {
-          currentArticle += trimmed + "\n";
+      // تقسيم النظام إلى مواد بناءً على كلمة "المادة" متبوعة برقم
+      const parts = s.text.split(/(?=المادة\s*\(?\d)/);
+      parts.forEach(part => {
+        const trimmed = part.trim();
+        if (!trimmed) return;
+        if (trimmed.toLowerCase().includes(t)) {
+          // استخرج رقم المادة من أول سطر
+          const firstLine = trimmed.split("
+")[0].trim();
+          const ref = "نظام — " + s.name + " — " + firstLine.substring(0, 50);
+          res.push({
+            ref,
+            text: trimmed.substring(0, 600),
+            fullText: trimmed,
+            bc: "rgba(184,146,42,0.1)",
+            btc: GOLD
+          });
         }
       });
-      // المادة الأخيرة
-      if (currentArticle && currentArticle.toLowerCase().includes(t)) {
-        res.push({ ref:"نظام — "+s.name+" — "+currentTitle, text:currentArticle.substring(0,500), bc:"rgba(184,146,42,0.1)", btc:GOLD, fullText:currentArticle, sysName:s.name });
-      }
     });
 
     bank.forEach(b => {
       if (b.title.toLowerCase().includes(t) || b.text.toLowerCase().includes(t))
-        res.push({ ref:b.type+" — "+b.title, text:b.text.substring(0,400), bc:"rgba(59,130,246,0.1)", btc:"#2563eb", fullText:b.text });
+        res.push({ ref: b.type + " — " + b.title, text: b.text.substring(0, 400), fullText: b.text, bc: "rgba(59,130,246,0.1)", btc: "#2563eb" });
     });
 
     setResults(res);
