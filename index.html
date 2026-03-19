@@ -394,25 +394,49 @@ function SearchPage({ systems, bank }) {
     const res = [];
 
     systems.forEach(s => {
-      // تقسيم النظام إلى مواد بناءً على كلمة "المادة" متبوعة برقم
-      const parts = s.text.split(/(?=المادة\s*\(?\d)/);
-      parts.forEach(part => {
-        const trimmed = part.trim();
-        if (!trimmed) return;
-        if (trimmed.toLowerCase().includes(t)) {
-          // استخرج رقم المادة من أول سطر
-          const firstLine = trimmed.split("
-")[0].trim();
-          const ref = "نظام — " + s.name + " — " + firstLine.substring(0, 50);
+      // تقسيم النظام إلى مواد — نبحث عن "المادة" متبوعة برقم
+      const text = s.text;
+      const articlePattern = "المادة";
+      let searchPos = 0;
+      const articleStarts = [];
+      
+      while (true) {
+        const found = text.indexOf(articlePattern, searchPos);
+        if (found === -1) break;
+        // تأكد أن التالي رقم أو قوس
+        const after = text.substring(found + articlePattern.length, found + articlePattern.length + 5).trim();
+        if (after && (after[0] >= '0' && after[0] <= '9' || after[0] === '(' || after[0] === 'ا')) {
+          articleStarts.push(found);
+        }
+        searchPos = found + 1;
+      }
+
+      if (articleStarts.length === 0) {
+        // لا توجد مواد — ابحث في النص كله
+        if (text.toLowerCase().includes(t)) {
+          const idx = text.toLowerCase().indexOf(t);
+          res.push({ ref: "نظام — " + s.name, text: text.substring(Math.max(0, idx-50), idx+400), fullText: text, bc: "rgba(184,146,42,0.1)", btc: GOLD });
+        }
+        return;
+      }
+
+      // لكل مادة
+      for (let i = 0; i < articleStarts.length; i++) {
+        const artStart = articleStarts[i];
+        const artEnd = i + 1 < articleStarts.length ? articleStarts[i+1] : text.length;
+        const artText = text.substring(artStart, artEnd).trim();
+        
+        if (artText.toLowerCase().includes(t)) {
+          const firstLine = artText.split("\n")[0].trim().substring(0, 60);
           res.push({
-            ref,
-            text: trimmed.substring(0, 600),
-            fullText: trimmed,
+            ref: "نظام — " + s.name + " — " + firstLine,
+            text: artText.substring(0, 600),
+            fullText: artText,
             bc: "rgba(184,146,42,0.1)",
             btc: GOLD
           });
         }
-      });
+      }
     });
 
     bank.forEach(b => {
@@ -422,6 +446,7 @@ function SearchPage({ systems, bank }) {
 
     setResults(res);
   };
+
 
   const hi = txt => {
     if (!q.trim()) return txt;
