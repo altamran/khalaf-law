@@ -113,6 +113,46 @@ const loadLS = (k, def) => { try { const v = localStorage.getItem(k); return v ?
 const saveLS = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
 
 function App() {
+  const [unlocked, setUnlocked] = useState(() => sessionStorage.getItem("kh_auth") === "1");
+  const [pwInput, setPwInput] = useState("");
+  const [pwError, setPwError] = useState(false);
+
+  const checkPassword = () => {
+    if (pwInput === "khalafqanoonksa2030") {
+      sessionStorage.setItem("kh_auth", "1");
+      setUnlocked(true);
+    } else {
+      setPwError(true);
+      setTimeout(() => setPwError(false), 2000);
+    }
+  };
+
+  if (!unlocked) {
+    return (
+      <div style={{ minHeight:"100vh", background:"#0d1117", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:"'Tajawal',sans-serif", direction:"rtl" }}>
+        <style>{"@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap');"}</style>
+        <div style={{ background:"#fff", borderRadius:16, padding:"40px 36px", width:"90%", maxWidth:380, textAlign:"center", boxShadow:"0 8px 48px rgba(0,0,0,0.3)" }}>
+          <div style={{ width:52, height:52, background:"linear-gradient(135deg,#b8922a,#d4a843)", borderRadius:12, display:"flex", alignItems:"center", justifyContent:"center", fontFamily:"serif", fontSize:26, color:"#0d1117", fontWeight:700, margin:"0 auto 16px" }}>خ</div>
+          <div style={{ fontSize:18, fontWeight:800, color:"#2a1f0e", marginBottom:4 }}>منصة خلف</div>
+          <div style={{ fontSize:12, color:"#8a7a65", marginBottom:28 }}>التمران القانونية الخاصة</div>
+          <input
+            type="password"
+            value={pwInput}
+            onChange={e => setPwInput(e.target.value)}
+            onKeyDown={e => e.key === "Enter" && checkPassword()}
+            placeholder="كلمة المرور"
+            style={{ width:"100%", border:`1.5px solid ${pwError ? "#dc2626" : "rgba(184,146,42,0.3)"}`, borderRadius:8, padding:"10px 14px", fontFamily:"'Tajawal',sans-serif", fontSize:14, color:"#2a1f0e", outline:"none", background:"#faf7f0", boxSizing:"border-box", textAlign:"center", marginBottom:8 }}
+            autoFocus
+          />
+          {pwError && <div style={{ fontSize:12, color:"#dc2626", marginBottom:8 }}>كلمة المرور غير صحيحة</div>}
+          <button onClick={checkPassword} style={{ width:"100%", background:"linear-gradient(135deg,#b8922a,#d4a843)", color:"#0d1117", border:"none", borderRadius:8, padding:"11px", fontFamily:"'Tajawal',sans-serif", fontSize:14, fontWeight:700, cursor:"pointer", marginTop:4 }}>
+            دخول
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   const [page, setPage] = useState("chat");
   const [systems, setSystems] = useState(() => loadLS(STORAGE.sys, []));
   const [bank, setBank] = useState(() => loadLS(STORAGE.bank, []));
