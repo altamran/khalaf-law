@@ -363,11 +363,35 @@ function AnalyzerPage({ systems, callApi, loading, setLoading, result, setResult
   const [pos, setPos] = useState("مدعي");
   const [notes, setNotes] = useState("");
 
+  // استخراج المواد ذات الصلة من النصوص النظامية
+  const extractRelevantArticles = (facts, systems) => {
+    if (!systems.length) return "";
+    const keywords = facts.split(/\s+/).filter(w => w.length > 3);
+    const relevant = [];
+    systems.forEach(sys => {
+      const articles = sys.text.split(/\n(?=المادة|مادة|ARTICLE)/i);
+      articles.forEach(article => {
+        const lowerArticle = article.toLowerCase();
+        const matched = keywords.some(kw => lowerArticle.includes(kw.toLowerCase()));
+        if (matched && article.trim().length > 20) {
+          relevant.push({ sys: sys.name, text: article.trim().substring(0, 800) });
+        }
+      });
+    });
+    // إذا لم يجد شيئاً خذ أول 30 مادة
+    if (relevant.length === 0 && systems.length) {
+      const firstSys = systems[0];
+      const articles = firstSys.text.split(/\n(?=المادة|مادة)/i).slice(0, 30);
+      articles.forEach(a => relevant.push({ sys: firstSys.name, text: a.trim().substring(0, 800) }));
+    }
+    return relevant.slice(0, 25).map(r => `[${r.sys}]\n${r.text}`).join("\n\n---\n\n");
+  };
+
   const analyze = async () => {
     if (!facts.trim()) { toast("⚠️ أدخل وقائع القضية"); return; }
     setLoading(true);
     const sysCtx = systems.length ? "الأنظمة المتاحة في المنصة: " + systems.map(s=>s.name).join("، ") : "";
-    const sysTexts = systems.map(s=>`=== ${s.name} ===\n${s.text}`).join("\n\n---\n\n");
+    const sysTexts = extractRelevantArticles(facts + " " + caseType, systems);
     const prompt = `أنت محامٍ قانوني سعودي متخصص. قدم تحليلاً قانونياً احترافياً دقيقاً باللغة العربية الفصحى.
 
 نوع القضية: ${caseType}
@@ -492,9 +516,27 @@ function DraftPage({ systems, callApi, loading, setLoading, result, setResult, m
     setLoading(true);
 
     // استخرج نصوص الأنظمة المضافة كاملة
-    const sysTexts = systems.length
-      ? systems.map(s => `=== ${s.name} (النص الكامل) ===\n${s.text}`).join("\n\n---\n\n")
-      : "";
+    // استخراج المواد ذات الصلة فقط
+    const extractArticles = (query, systems) => {
+      if (!systems.length) return "";
+      const keywords = query.split(/\s+/).filter(w => w.length > 3);
+      const relevant = [];
+      systems.forEach(sys => {
+        const articles = sys.text.split(/\n(?=المادة|مادة)/i);
+        articles.forEach(article => {
+          const matched = keywords.some(kw => article.includes(kw));
+          if (matched && article.trim().length > 20) {
+            relevant.push(`[${sys.name}]\n${article.trim().substring(0, 800)}`);
+          }
+        });
+      });
+      if (relevant.length === 0 && systems.length) {
+        const articles = systems[0].text.split(/\n(?=المادة|مادة)/i).slice(0, 30);
+        articles.forEach(a => relevant.push(`[${systems[0].name}]\n${a.trim().substring(0, 800)}`));
+      }
+      return relevant.slice(0, 25).join("\n\n---\n\n");
+    };
+    const sysTexts = extractArticles(body + " " + memoType, systems);
 
     const styleGuide = `
 ═══ بصمة الأسلوب — التزم بها حرفياً ═══
