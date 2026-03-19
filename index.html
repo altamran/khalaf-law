@@ -18,27 +18,42 @@ const GOLD_L = "#d4a843";
 const INK = "#0d1117";
 
 const S = {
-  app: { display:"flex", minHeight:"100vh", fontFamily:"'Tajawal', sans-serif", direction:"rtl", background:"#faf7f0" },
-  sidebar: { width:250, background:INK, display:"flex", flexDirection:"column", flexShrink:0, borderLeft:`1px solid rgba(184,146,42,0.15)` },
+  app: { display:"flex", minHeight:"100vh", fontFamily:"'Tajawal',sans-serif", direction:"rtl", background:"#faf7f0" },
+  sidebar: { width:248, background:INK, display:"flex", flexDirection:"column", flexShrink:0, borderLeft:"1px solid rgba(184,146,42,0.15)" },
   sbBrand: { padding:"22px 18px 16px", borderBottom:"1px solid rgba(184,146,42,0.1)" },
-  sbSeal: { width:38, height:38, background:`linear-gradient(135deg,${GOLD},${GOLD_L})`, borderRadius:9, display:"flex", alignItems:"center", justifyContent:"center", fontFamily:"serif", fontSize:19, color:INK, fontWeight:700, marginBottom:10 },
-  sbName: { fontSize:14, fontWeight:800, color:"#fff" },
-  sbSub: { fontSize:10, color:GOLD, marginTop:2 },
+  sbSeal: { width:38, height:38, background:"linear-gradient(135deg,#b8922a,#d4a843)", borderRadius:9, display:"flex", alignItems:"center", justifyContent:"center", fontFamily:"serif", fontSize:19, color:INK, fontWeight:700, marginBottom:10 },
   sbNav: { padding:"14px 0", flex:1, overflowY:"auto" },
   sbSec: { fontSize:9, color:"rgba(184,146,42,0.5)", fontWeight:700, letterSpacing:"1.5px", padding:"10px 18px 4px", textTransform:"uppercase" },
   sbFooter: { padding:"12px 18px", borderTop:"1px solid rgba(184,146,42,0.08)" },
-  main: { flex:1, display:"flex", flexDirection:"column", overflow:"hidden" },
-  topbar: { background:"rgba(250,247,240,0.95)", borderBottom:`1px solid rgba(184,146,42,0.18)`, padding:"11px 26px", display:"flex", alignItems:"center", gap:12 },
+  main: { flex:1, display:"flex", flexDirection:"column", minWidth:0 },
+  topbar: { background:"rgba(250,247,240,0.95)", borderBottom:"1px solid rgba(184,146,42,0.18)", padding:"11px 26px", display:"flex", alignItems:"center", gap:12 },
   content: { padding:"24px 26px", flex:1, overflowY:"auto" },
-  card: { background:"#fff", border:`1px solid rgba(184,146,42,0.2)`, borderRadius:12 },
+  card: { background:"#fff", border:"1px solid rgba(184,146,42,0.2)", borderRadius:12 },
   btn: { display:"inline-flex", alignItems:"center", gap:6, padding:"8px 16px", borderRadius:8, fontFamily:"'Tajawal',sans-serif", fontSize:13, fontWeight:700, cursor:"pointer", border:"none", transition:"all .16s" },
-  btnP: { background:`linear-gradient(135deg,${GOLD},${GOLD_L})`, color:INK },
-  btnO: { background:"transparent", color:"#5a4a35", border:`1.5px solid rgba(184,146,42,0.25)` },
+  btnP: { background:"linear-gradient(135deg,#b8922a,#d4a843)", color:INK },
+  btnO: { background:"transparent", color:"#5a4a35", border:"1.5px solid rgba(184,146,42,0.25)" },
   btnD: { background:"rgba(239,68,68,0.07)", color:"#dc2626", border:"1.5px solid rgba(239,68,68,0.18)" },
-  input: { width:"100%", background:"#faf7f0", border:`1.5px solid rgba(184,146,42,0.22)`, borderRadius:8, padding:"9px 12px", fontFamily:"'Tajawal',sans-serif", fontSize:13, color:"#2a1f0e", outline:"none", direction:"rtl", boxSizing:"border-box" },
+  input: { width:"100%", background:"#faf7f0", border:"1.5px solid rgba(184,146,42,0.22)", borderRadius:8, padding:"9px 12px", fontFamily:"'Tajawal',sans-serif", fontSize:13, color:"#2a1f0e", outline:"none", direction:"rtl", boxSizing:"border-box" },
   label: { display:"block", fontSize:12, fontWeight:700, color:"#5a4a35", marginBottom:5 },
   tag: { display:"inline-block", padding:"2px 9px", borderRadius:20, fontSize:11, fontWeight:600 },
 };
+
+const STYLE_GUIDE = `أنت المساعد القانوني الخاص للمحامي خلف التمران. تكتب وتحلل بأسلوبه الخاص تماماً:
+
+أسلوب خلف التمران:
+- يخاطب القاضي مباشرة: "فضيلة ناظر الدعوى" و"فضيلتكم"
+- يستخدم جملاً حاسمة مثل: "هذه الدعوى تستند على صحيح النظام" — "ما زعمه المدعى عليه لا يقوم على سند صحيح من النظام" — "ما ذكره المدعي عبارة عن دعوى مرسلة لا ينهض بمثلها حق" — "المدعي لم يحرر دعواه" — "الدائرة لم تجر المقتضى الشرعي والنظامي الواجب عليها"
+- يفكك حجج الخصم ورقة ورقة ويبين عجزه عن الإثبات
+- يربط المادة النظامية بالواقعة: "المادة كذا قررت... وهو ما ينطبق على الواقعة لأن..."
+- يختم كل فقرة بجملة قاطعة: "مما يفقدها حجيتها نظامًا" أو "لا تقوم على بينة معتبرة"
+- يرتب: أولاً — ثانياً — ثالثاً مع ترقيم داخلي 1، 2، 3
+- يبدأ المذكرات بالبسملة دائماً
+- نبرة الثقة: "نتمسك بأن" و"يثبت لفضيلتكم"
+
+قواعد صارمة:
+- لا تذكر رقم مادة إلا إذا وجدته في الأنظمة المضافة
+- إذا لم تجد المادة قل "وفقاً لأحكام النظام" دون ذكر رقم
+- لا تخترع أرقام مواد من ذاكرتك`;
 
 function NavItem({ icon, label, id, active, onClick, badge }) {
   return (
@@ -51,7 +66,7 @@ function NavItem({ icon, label, id, active, onClick, badge }) {
     }}>
       <span style={{ fontSize:15 }}>{icon}</span>
       <span style={{ flex:1 }}>{label}</span>
-      {badge !== undefined && (
+      {badge !== undefined && badge > 0 && (
         <span style={{ background:"rgba(184,146,42,0.16)", color:GOLD_L, fontSize:10, fontWeight:700, padding:"1px 7px", borderRadius:20 }}>{badge}</span>
       )}
     </div>
@@ -62,43 +77,37 @@ function Modal({ open, onClose, title, children, wide }) {
   if (!open) return null;
   return (
     <div onClick={onClose} style={{ position:"fixed", inset:0, background:"rgba(13,17,23,0.5)", zIndex:999, display:"flex", alignItems:"center", justifyContent:"center" }}>
-      <div onClick={e => e.stopPropagation()} style={{ background:"#fff", borderRadius:15, padding:28, width:"90%", maxWidth: wide ? 680 : 540, maxHeight:"88vh", overflowY:"auto", boxShadow:"0 8px 48px rgba(0,0,0,0.14)" }}>
-        <div style={{ fontSize:15, fontWeight:800, color:"#2a1f0e", marginBottom:18, paddingBottom:13, borderBottom:`1px solid rgba(184,146,42,0.18)` }}>{title}</div>
+      <div onClick={e=>e.stopPropagation()} style={{ background:"#fff", borderRadius:15, padding:28, width:"90%", maxWidth:wide?700:540, maxHeight:"88vh", overflowY:"auto", boxShadow:"0 8px 48px rgba(0,0,0,0.14)" }}>
+        <div style={{ fontSize:15, fontWeight:800, color:"#2a1f0e", marginBottom:18, paddingBottom:13, borderBottom:"1px solid rgba(184,146,42,0.18)" }}>{title}</div>
         {children}
       </div>
     </div>
   );
 }
 
-function Spinner() {
-  return <div style={{ width:24, height:24, border:`3px solid rgba(184,146,42,0.2)`, borderTopColor:GOLD, borderRadius:"50%", animation:"spin .8s linear infinite" }} />;
+function Spinner({ small }) {
+  const s = small ? 18 : 24;
+  return <div style={{ width:s, height:s, border:`2.5px solid rgba(184,146,42,0.2)`, borderTopColor:GOLD, borderRadius:"50%", animation:"spin .8s linear infinite", flexShrink:0 }} />;
 }
 
 function Fg({ label, children, last }) {
-  return <div style={{ marginBottom: last ? 0 : 15 }}><label style={S.label}>{label}</label>{children}</div>;
+  return <div style={{ marginBottom:last?0:15 }}><label style={S.label}>{label}</label>{children}</div>;
 }
 
 const today = () => new Date().toLocaleDateString("ar-SA", { year:"numeric", month:"2-digit", day:"2-digit" });
-
-const STORAGE = { sys:"kh_sys3", bank:"kh_bank3", stats:"kh_stats3", key:"kh_apikey" };
+const STORAGE = { sys:"kh_sys4", bank:"kh_bank4", stats:"kh_stats4", key:"kh_apikey" };
 const loadLS = (k, def) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch { return def; } };
 const saveLS = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
 
 function App() {
-  const [page, setPage] = useState("home");
+  const [page, setPage] = useState("chat");
   const [systems, setSystems] = useState(() => loadLS(STORAGE.sys, []));
   const [bank, setBank] = useState(() => loadLS(STORAGE.bank, []));
   const [stats, setStats] = useState(() => loadLS(STORAGE.stats, { cases:0, memos:0 }));
   const [apiKey, setApiKey] = useState(() => localStorage.getItem(STORAGE.key) || "");
   const [modal, setModal] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [notifyMsg, setNotifyMsg] = useState("");
   const [bankFilter, setBankFilter] = useState("all");
-  const [memoType, setMemoType] = useState("اعتراض");
-  const [searchQ, setSearchQ] = useState("");
-  const [searchResults, setSearchResults] = useState(null);
-  const [analysisResult, setAnalysisResult] = useState(null);
-  const [memoResult, setMemoResult] = useState(null);
   const notifTimer = useRef(null);
 
   useEffect(() => { saveLS(STORAGE.sys, systems); }, [systems]);
@@ -111,29 +120,25 @@ function App() {
     notifTimer.current = setTimeout(() => setNotifyMsg(""), 3200);
   };
 
-  const callApi = async (prompt) => {
+  const callApi = async (messages) => {
     if (!apiKey) { setModal("settings"); throw new Error("NO_KEY"); }
-    const r = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-        "anthropic-dangerous-direct-browser-access": "true"
-      },
-      body: JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:2000, messages:[{ role:"user", content:prompt }] })
-    });
-    if (r.status === 401) { toast("❌ المفتاح غير صحيح — تحقق من الإعدادات"); setModal("settings"); throw new Error("BAD_KEY"); }
-    if (r.status === 429) { toast("⚠️ تجاوزت الحد — انتظر دقيقة وأعد المحاولة"); throw new Error("RATE_LIMIT"); }
-    if (!r.ok) { toast("❌ خطأ من الخادم: " + r.status); throw new Error("SERVER_ERR"); }
+    let r;
+    try {
+      r = await fetch("https://api.anthropic.com/v1/messages", {
+        method:"POST",
+        headers: { "Content-Type":"application/json", "x-api-key":apiKey, "anthropic-version":"2023-06-01", "anthropic-dangerous-direct-browser-access":"true" },
+        body: JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:2000, system: STYLE_GUIDE, messages })
+      });
+    } catch { toast("❌ خطأ في الشبكة"); throw new Error("NET_ERR"); }
+    if (r.status === 401) { toast("❌ المفتاح غير صحيح"); setModal("settings"); throw new Error("BAD_KEY"); }
+    if (r.status === 429) { toast("⚠️ تجاوزت الحد — انتظر دقيقة"); throw new Error("RATE"); }
+    if (!r.ok) { toast("❌ خطأ: " + r.status); throw new Error("ERR"); }
     const d = await r.json();
-    if (d.error) { toast("❌ " + (d.error.message || "خطأ من API")); throw new Error("API_ERR"); }
+    if (d.error) { toast("❌ " + d.error.message); throw new Error("API"); }
     return d.content?.[0]?.text || "";
   };
 
-  const nav = (id) => { setPage(id); setSearchResults(null); setAnalysisResult(null); setMemoResult(null); };
-
-  const pageTitles = { home:"لوحة التحكم", search:"البحث الذكي", analyzer:"تحليل القضية", draft:"توليد المذكرات", systems:"الأنظمة واللوائح", bank:"بنك الخبرة" };
+  const pageTitles = { chat:"المساعد القانوني", search:"البحث في الأنظمة", systems:"الأنظمة واللوائح", bank:"بنك الخبرة" };
 
   return (
     <div style={S.app}>
@@ -143,55 +148,55 @@ function App() {
         * { box-sizing:border-box; }
         ::-webkit-scrollbar { width:5px; }
         ::-webkit-scrollbar-thumb { background:rgba(184,146,42,0.2); border-radius:3px; }
+        textarea:focus, input:focus, select:focus { border-color:#b8922a !important; background:#fff !important; outline:none; }
       `}</style>
 
-      {/* SIDEBAR */}
       <aside style={S.sidebar}>
         <div style={S.sbBrand}>
           <div style={S.sbSeal}>خ</div>
-          <div style={S.sbName}>منصة خلف</div>
-          <div style={S.sbSub}>التمران القانونية الخاصة</div>
+          <div style={{ fontSize:14, fontWeight:800, color:"#fff" }}>منصة خلف</div>
+          <div style={{ fontSize:10, color:GOLD, marginTop:2 }}>التمران القانونية الخاصة</div>
         </div>
         <nav style={S.sbNav}>
-          <div style={S.sbSec}>الرئيسية</div>
-          <NavItem id="home" icon="🏛" label="لوحة التحكم" active={page==="home"} onClick={nav} />
-          <NavItem id="search" icon="🔍" label="البحث الذكي" active={page==="search"} onClick={nav} />
           <div style={S.sbSec}>الأدوات</div>
-          <NavItem id="analyzer" icon="⚖️" label="تحليل القضية" active={page==="analyzer"} onClick={nav} />
-          <NavItem id="draft" icon="📝" label="توليد المذكرات" active={page==="draft"} onClick={nav} />
+          <NavItem id="chat" icon="💬" label="المساعد القانوني" active={page==="chat"} onClick={setPage} />
+          <NavItem id="search" icon="🔍" label="البحث في الأنظمة" active={page==="search"} onClick={setPage} />
           <div style={S.sbSec}>المكتبة</div>
-          <NavItem id="systems" icon="📋" label="الأنظمة واللوائح" active={page==="systems"} onClick={nav} badge={systems.length} />
-          <NavItem id="bank" icon="🗂" label="بنك الخبرة" active={page==="bank"} onClick={nav} badge={bank.length} />
+          <NavItem id="systems" icon="📋" label="الأنظمة واللوائح" active={page==="systems"} onClick={setPage} badge={systems.length} />
+          <NavItem id="bank" icon="🗂" label="بنك الخبرة" active={page==="bank"} onClick={setPage} badge={bank.length} />
         </nav>
         <div style={S.sbFooter}>
           <div style={{ display:"flex", alignItems:"center", gap:9, marginBottom:10 }}>
-            <div style={{ width:32, height:32, background:`linear-gradient(135deg,${GOLD},${GOLD_L})`, borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:800, color:INK, flexShrink:0 }}>خ</div>
+            <div style={{ width:32, height:32, background:"linear-gradient(135deg,#b8922a,#d4a843)", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:800, color:INK }}>خ</div>
             <div>
               <div style={{ fontSize:13, fontWeight:700, color:"#fff" }}>خلف التمران</div>
               <div style={{ fontSize:10, color:GOLD }}>محامٍ — المنطقة الشرقية</div>
             </div>
           </div>
-          <button onClick={() => setModal("settings")} style={{ width:"100%", background:"rgba(184,146,42,0.08)", border:"1px solid rgba(184,146,42,0.2)", color:"rgba(255,255,255,0.6)", padding:"8px 0", borderRadius:8, fontFamily:"'Tajawal',sans-serif", fontSize:12, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", gap:8 }}>
+          <button onClick={()=>setModal("settings")} style={{ width:"100%", background:"rgba(184,146,42,0.08)", border:"1px solid rgba(184,146,42,0.2)", color:"rgba(255,255,255,0.6)", padding:"8px 0", borderRadius:8, fontFamily:"'Tajawal',sans-serif", fontSize:12, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", gap:8 }}>
             ⚙️ إعدادات API
-            <span style={{ width:7, height:7, borderRadius:"50%", background: apiKey ? "#22c55e" : "#dc2626" }} />
+            <span style={{ width:7, height:7, borderRadius:"50%", background:apiKey?"#22c55e":"#dc2626" }} />
           </button>
         </div>
       </aside>
 
-      {/* MAIN */}
       <main style={S.main}>
         <header style={S.topbar}>
           <div style={{ fontSize:16, fontWeight:800, color:"#2a1f0e", flex:1 }}>{pageTitles[page]}</div>
           {page==="systems" && <button onClick={()=>setModal("addSys")} style={{...S.btn,...S.btnP}}>+ إضافة نظام</button>}
           {page==="bank" && <button onClick={()=>setModal("addBank")} style={{...S.btn,...S.btnP}}>+ إضافة عنصر</button>}
-          {page==="home" && <button onClick={()=>nav("analyzer")} style={{...S.btn,...S.btnP}}>تحليل قضية جديدة</button>}
+          <div style={{ display:"flex", gap:8, alignItems:"center" }}>
+            {["chat","search","systems","bank"].map(p => (
+              <div key={p} style={{ fontSize:11, color: page===p ? GOLD : "#8a7a65", cursor:"pointer", fontWeight: page===p ? 700 : 400 }} onClick={()=>setPage(p)}>
+                {{chat:"محادثة",search:"بحث",systems:"أنظمة",bank:"خبرة"}[p]}
+              </div>
+            ))}
+          </div>
         </header>
 
-        <div style={S.content}>
-          {page==="home" && <HomePage systems={systems} bank={bank} stats={stats} nav={nav} setSearchQ={setSearchQ} setPage={setPage} setSearchResults={setSearchResults} />}
-          {page==="search" && <SearchPage systems={systems} bank={bank} initQ={searchQ} results={searchResults} setResults={setSearchResults} />}
-          {page==="analyzer" && <AnalyzerPage systems={systems} callApi={callApi} loading={loading} setLoading={setLoading} result={analysisResult} setResult={setAnalysisResult} stats={stats} setStats={setStats} toast={toast} />}
-          {page==="draft" && <DraftPage systems={systems} callApi={callApi} loading={loading} setLoading={setLoading} result={memoResult} setResult={setMemoResult} memoType={memoType} setMemoType={setMemoType} stats={stats} setStats={setStats} bank={bank} setBank={setBank} toast={toast} />}
+        <div style={page==="chat" ? {} : S.content}>
+          {page==="chat" && <ChatPage systems={systems} bank={bank} callApi={callApi} stats={stats} setStats={setStats} toast={toast} setBank={setBank} />}
+          {page==="search" && <SearchPage systems={systems} bank={bank} />}
           {page==="systems" && <SystemsPage systems={systems} setSystems={setSystems} toast={toast} />}
           {page==="bank" && <BankPage bank={bank} setBank={setBank} bankFilter={bankFilter} setBankFilter={setBankFilter} toast={toast} />}
         </div>
@@ -202,7 +207,7 @@ function App() {
       <SettingsModal open={modal==="settings"} onClose={()=>setModal(null)} apiKey={apiKey} setApiKey={setApiKey} toast={toast} />
 
       {notifyMsg && (
-        <div style={{ position:"fixed", bottom:20, left:20, background:INK, color:"#fff", padding:"11px 18px", borderRadius:9, fontSize:13, fontWeight:600, borderRight:`3px solid ${GOLD}`, zIndex:9999, maxWidth:300, boxShadow:"0 4px 20px rgba(0,0,0,0.2)" }}>
+        <div style={{ position:"fixed", bottom:20, left:20, background:INK, color:"#fff", padding:"11px 18px", borderRadius:9, fontSize:13, fontWeight:600, borderRight:`3px solid ${GOLD}`, zIndex:9999, maxWidth:300 }}>
           {notifyMsg}
         </div>
       )}
@@ -210,116 +215,180 @@ function App() {
   );
 }
 
-// ── HOME ────────────────────────────────────────────────
-function HomePage({ systems, bank, stats, nav, setSearchQ, setPage, setSearchResults }) {
-  const [q, setQ] = useState("");
+// ── CHAT PAGE ────────────────────────────────────────────
+function ChatPage({ systems, bank, callApi, stats, setStats, toast, setBank }) {
+  const [messages, setMessages] = useState([
+    { role:"assistant", text:"مرحباً يا خلف — أنا مساعدك القانوني. يمكنك:\n• إعطائي وقائع قضية لأحللها\n• طلب كتابة مذكرة بأسلوبك\n• إرفاق مذكرة وقول \"اكتب بنفس الأسلوب\"\n• تعديل أي جزء من المذكرة\n• سؤالي عن أي مسألة قانونية\n\nما الذي تريد العمل عليه؟" }
+  ]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [selSystems, setSelSystems] = useState([]);
+  const [showSysSelect, setShowSysSelect] = useState(false);
+  const bottomRef = useRef(null);
+  const textareaRef = useRef(null);
 
-  const doSearch = () => {
-    if (!q.trim()) return;
-    setSearchQ(q);
-    const t = q.trim().toLowerCase();
-    const res = [];
-    systems.forEach(s => {
-      if (s.name.toLowerCase().includes(t) || s.text.toLowerCase().includes(t)) {
-        const idx = s.text.toLowerCase().indexOf(t);
-        const snippet = idx >= 0 ? s.text.substring(Math.max(0,idx-60), idx+220) : s.text.substring(0,220);
-        res.push({ ref:"نظام — "+s.name, text:snippet, badge:"نظام", bc:"rgba(184,146,42,0.1)", btc:"#b8922a" });
-      }
-    });
-    bank.forEach(b => {
-      if (b.title.toLowerCase().includes(t) || b.text.toLowerCase().includes(t))
-        res.push({ ref:b.type+" — "+b.title, text:b.text.substring(0,220), badge:b.type, bc:"rgba(59,130,246,0.1)", btc:"#2563eb" });
-    });
-    setSearchResults(res);
-    setPage("search");
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior:"smooth" }); }, [messages]);
+
+  const getSysContext = () => {
+    if (!selSystems.length) return "";
+    const selected = systems.filter(s => selSystems.includes(s.id));
+    if (!selected.length) return "";
+    return "\n\n=== الأنظمة المحددة للبحث ===\n" + selected.map(s => {
+      // Send first 8000 chars of each selected system
+      return `--- ${s.name} ---\n${s.text.substring(0, 8000)}`;
+    }).join("\n\n");
   };
 
-  const recent = [...systems.map(s=>({type:"نظام",label:s.name,date:s.date})), ...bank.map(b=>({type:b.type,label:b.title,date:b.date}))].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8);
-  const tc = {نظام:{bg:"rgba(184,146,42,0.1)",c:"#b8922a"},حكم:{bg:"rgba(34,197,94,0.1)",c:"#16a34a"},دفع:{bg:"rgba(59,130,246,0.1)",c:"#2563eb"},صيغة:{bg:"rgba(168,85,247,0.1)",c:"#7c3aed"},ملاحظة:{bg:"rgba(239,68,68,0.1)",c:"#dc2626"}};
+  const send = async () => {
+    const text = input.trim();
+    if (!text || loading) return;
+
+    const sysCtx = getSysContext();
+    const userText = text + (sysCtx ? sysCtx : "");
+
+    const newMessages = [...messages, { role:"user", text }];
+    setMessages(newMessages);
+    setInput("");
+    setLoading(true);
+
+    // Build API messages from history
+    const apiMessages = newMessages.map(m => ({
+      role: m.role === "assistant" ? "assistant" : "user",
+      content: m.role === "user" && m === newMessages[newMessages.length-1] ? userText : m.text
+    }));
+
+    try {
+      const reply = await callApi(apiMessages);
+      setMessages(prev => [...prev, { role:"assistant", text:reply }]);
+      // Count if it looks like an analysis or memo
+      if (text.includes("حلل") || text.includes("قضية") || text.includes("وقائع")) {
+        setStats(s => ({ ...s, cases: s.cases+1 }));
+      }
+      if (text.includes("مذكرة") || text.includes("اكتب")) {
+        setStats(s => ({ ...s, memos: s.memos+1 }));
+      }
+    } catch(e) {
+      if (e.message !== "NO_KEY" && e.message !== "BAD_KEY") {
+        setMessages(prev => [...prev, { role:"assistant", text:"❌ حدث خطأ في الاتصال. تحقق من مفتاح API وأعد المحاولة.", error:true }]);
+      }
+    } finally { setLoading(false); }
+  };
+
+  const saveToBank = (text) => {
+    const title = text.substring(0, 60) + (text.length > 60 ? "..." : "");
+    setBank(b => [{ id:Date.now(), type:"صيغة", title, text, date:today() }, ...b]);
+    toast("💾 تم الحفظ في بنك الخبرة");
+  };
+
+  const quickPrompts = [
+    { label:"حلل قضية", text:"حلل هذه القضية واستخرج التكييف القانوني والمواد المنطبقة والدفوع الممكنة:\n\n" },
+    { label:"مذكرة اعتراض", text:"اكتب مذكرة اعتراض قانونية بأسلوبي للقضية التالية:\n\n" },
+    { label:"مذكرة جوابية", text:"اكتب مذكرة جوابية بأسلوبي للقضية التالية:\n\n" },
+    { label:"صِغ هذه الفقرة", text:"صِغ هذه الفقرة بأسلوب قضائي سعودي رفيع:\n\n" },
+    { label:"اكتب بنفس الأسلوب", text:"أرفق لك هذه المذكرة كنموذج لأسلوبي — اكتب مذكرة بنفس الأسلوب للقضية التالية:\n\nالنموذج:\n\nالقضية الجديدة:\n" },
+    { label:"دفوع ممكنة", text:"ما الدفوع النظامية الممكنة في هذه القضية:\n\n" },
+  ];
 
   return (
-    <div>
-      <div style={{ background:`linear-gradient(135deg,${INK},#1a2332)`, borderRadius:16, padding:"30px 34px", marginBottom:20, position:"relative", overflow:"hidden" }}>
-        <div style={{ fontSize:20, fontWeight:900, color:"#fff", marginBottom:4 }}>مرحباً في منصتك القانونية</div>
-        <div style={{ fontSize:12, color:"rgba(255,255,255,0.38)", marginBottom:20 }}>ابحث في الأنظمة — حلل القضايا — أنشئ مذكراتك</div>
-        <div style={{ display:"flex", gap:9, background:"rgba(255,255,255,0.06)", border:"1px solid rgba(184,146,42,0.2)", borderRadius:9, padding:"7px 7px 7px 14px", alignItems:"center" }}>
-          <input value={q} onChange={e=>setQ(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doSearch()} placeholder="ابحث في الأنظمة وبنك الخبرة..." style={{ flex:1, background:"none", border:"none", outline:"none", color:"#fff", fontFamily:"'Tajawal',sans-serif", fontSize:13, direction:"rtl" }} />
-          <button onClick={doSearch} style={{ background:`linear-gradient(135deg,${GOLD},${GOLD_L})`, color:INK, border:"none", cursor:"pointer", padding:"8px 18px", borderRadius:7, fontFamily:"'Tajawal',sans-serif", fontSize:13, fontWeight:700 }}>🔍 بحث</button>
-        </div>
-      </div>
-
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:12, marginBottom:20 }}>
-        {[
-          {icon:"⚖️", title:"تحليل قضية", desc:"أدخل الوقائع واحصل على التكييف القانوني والدفوع", id:"analyzer"},
-          {icon:"📝", title:"إنشاء مذكرة", desc:"توليد مذكرات قضائية احترافية بالذكاء الاصطناعي", id:"draft"},
-          {icon:"📋", title:"إضافة نظام", desc:"الصق نص النظام كاملاً وابنِ مكتبتك القانونية", id:"systems"},
-        ].map(x => (
-          <div key={x.id} onClick={()=>nav(x.id)} style={{ ...S.card, padding:"20px", cursor:"pointer", transition:"all .2s" }}
-            onMouseEnter={e=>{e.currentTarget.style.borderColor=GOLD;e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 8px 28px rgba(0,0,0,0.09)";}}
-            onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(184,146,42,0.2)";e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="none";}}>
-            <div style={{ fontSize:24, marginBottom:8 }}>{x.icon}</div>
-            <div style={{ fontSize:14, fontWeight:800, color:"#2a1f0e", marginBottom:4 }}>{x.title}</div>
-            <div style={{ fontSize:11.5, color:"#8a7a65", lineHeight:1.6 }}>{x.desc}</div>
-          </div>
+    <div style={{ display:"flex", flexDirection:"column", height:"calc(100vh - 52px)" }}>
+      {/* System selector bar */}
+      <div style={{ background:"#fff", borderBottom:"1px solid rgba(184,146,42,0.15)", padding:"8px 20px", display:"flex", alignItems:"center", gap:10, flexWrap:"wrap" }}>
+        <span style={{ fontSize:12, color:"#8a7a65", flexShrink:0 }}>الأنظمة للبحث:</span>
+        {systems.length === 0 ? (
+          <span style={{ fontSize:12, color:"#8a7a65" }}>لم تُضَف أنظمة بعد</span>
+        ) : systems.map(s => (
+          <button key={s.id} onClick={() => setSelSystems(prev => prev.includes(s.id) ? prev.filter(x=>x!==s.id) : [...prev, s.id])}
+            style={{ padding:"3px 12px", borderRadius:20, border:`1.5px solid ${selSystems.includes(s.id) ? GOLD : "rgba(184,146,42,0.25)"}`, background:selSystems.includes(s.id) ? "rgba(184,146,42,0.1)" : "#faf7f0", color:selSystems.includes(s.id) ? GOLD : "#8a7a65", fontSize:11.5, fontWeight:600, cursor:"pointer", transition:"all .15s" }}>
+            {selSystems.includes(s.id) ? "✓ " : ""}{s.name}
+          </button>
         ))}
       </div>
 
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:12, marginBottom:20 }}>
-        {[
-          {ico:"📋", val:systems.length, label:"نظام مضاف", bg:"rgba(184,146,42,0.1)"},
-          {ico:"⚖️", val:stats.cases, label:"قضية محللة", bg:"rgba(59,130,246,0.1)"},
-          {ico:"📝", val:stats.memos, label:"مذكرة منشأة", bg:"rgba(34,197,94,0.1)"},
-          {ico:"🗂", val:bank.length, label:"عنصر بنك الخبرة", bg:"rgba(168,85,247,0.1)"},
-        ].map((x,i) => (
-          <div key={i} style={{ ...S.card, padding:"15px 17px", display:"flex", alignItems:"center", gap:12 }}>
-            <div style={{ width:40, height:40, borderRadius:9, background:x.bg, display:"flex", alignItems:"center", justifyContent:"center", fontSize:17, flexShrink:0 }}>{x.ico}</div>
-            <div><div style={{ fontSize:22, fontWeight:900, color:"#2a1f0e" }}>{x.val}</div><div style={{ fontSize:11, color:"#8a7a65" }}>{x.label}</div></div>
-          </div>
-        ))}
-      </div>
-
-      <div style={{ ...S.card, padding:"18px 20px" }}>
-        <div style={{ fontSize:14, fontWeight:800, color:"#2a1f0e", marginBottom:12 }}>آخر الإضافات</div>
-        {recent.length === 0 ? (
-          <div style={{ textAlign:"center", padding:"32px 0", color:"#8a7a65" }}>
-            <div style={{ fontSize:36, opacity:.2 }}>📂</div>
-            <div style={{ fontSize:13, marginTop:8 }}>لا توجد بيانات — ابدأ بإضافة نظام أو عنصر</div>
-          </div>
-        ) : recent.map((x,i) => {
-          const c = tc[x.type] || tc["نظام"];
-          return (
-            <div key={i} style={{ display:"flex", alignItems:"center", gap:10, padding:"9px 0", borderBottom: i<recent.length-1?"1px solid rgba(184,146,42,0.07)":"none" }}>
-              <span style={{ ...S.tag, background:c.bg, color:c.c }}>{x.type}</span>
-              <span style={{ flex:1, fontSize:13, fontWeight:500, color:"#2a1f0e" }}>{x.label}</span>
-              <span style={{ fontSize:11, color:"#8a7a65" }}>{x.date}</span>
+      {/* Messages */}
+      <div style={{ flex:1, overflowY:"auto", padding:"20px 24px", display:"flex", flexDirection:"column", gap:16 }}>
+        {messages.map((m, i) => (
+          <div key={i} style={{ display:"flex", flexDirection:"column", alignItems: m.role==="user" ? "flex-end" : "flex-start", gap:4 }}>
+            <div style={{
+              maxWidth:"82%",
+              background: m.role==="user" ? "linear-gradient(135deg,#b8922a,#d4a843)" : m.error ? "rgba(239,68,68,0.08)" : "#fff",
+              color: m.role==="user" ? INK : "#2a1f0e",
+              border: m.role==="user" ? "none" : m.error ? "1px solid rgba(239,68,68,0.2)" : "1px solid rgba(184,146,42,0.18)",
+              borderRadius: m.role==="user" ? "14px 14px 4px 14px" : "14px 14px 14px 4px",
+              padding:"12px 16px",
+              fontSize:13.5,
+              lineHeight:1.85,
+              whiteSpace:"pre-wrap",
+              wordBreak:"break-word",
+              fontFamily: m.role==="assistant" ? "'Amiri',serif" : "'Tajawal',sans-serif",
+            }}>
+              {m.text}
             </div>
-          );
-        })}
+            {m.role==="assistant" && !m.error && i > 0 && (
+              <button onClick={() => saveToBank(m.text)} style={{ fontSize:11, color:"#8a7a65", background:"none", border:"none", cursor:"pointer", padding:"2px 6px" }}>
+                💾 حفظ في بنك الخبرة
+              </button>
+            )}
+          </div>
+        ))}
+        {loading && (
+          <div style={{ display:"flex", alignItems:"center", gap:10, padding:"10px 0" }}>
+            <Spinner small />
+            <span style={{ fontSize:12, color:"#8a7a65" }}>يكتب...</span>
+          </div>
+        )}
+        <div ref={bottomRef} />
+      </div>
+
+      {/* Quick prompts */}
+      <div style={{ padding:"8px 20px", display:"flex", gap:7, flexWrap:"wrap", borderTop:"1px solid rgba(184,146,42,0.1)", background:"#faf7f0" }}>
+        {quickPrompts.map((p,i) => (
+          <button key={i} onClick={() => { setInput(p.text); textareaRef.current?.focus(); }}
+            style={{ padding:"4px 12px", borderRadius:20, border:"1.5px solid rgba(184,146,42,0.25)", background:"#fff", color:"#5a4a35", fontSize:12, fontWeight:600, cursor:"pointer", transition:"all .15s" }}
+            onMouseEnter={e=>{e.currentTarget.style.borderColor=GOLD;e.currentTarget.style.color=GOLD;}}
+            onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(184,146,42,0.25)";e.currentTarget.style.color="#5a4a35";}}>
+            {p.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Input */}
+      <div style={{ padding:"12px 20px", background:"#fff", borderTop:"1px solid rgba(184,146,42,0.15)", display:"flex", gap:10, alignItems:"flex-end" }}>
+        <textarea
+          ref={textareaRef}
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          onKeyDown={e => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
+          placeholder="اكتب سؤالك أو وقائع القضية أو اطلب كتابة مذكرة... (Enter للإرسال، Shift+Enter لسطر جديد)"
+          style={{ ...S.input, minHeight:52, maxHeight:180, resize:"none", lineHeight:1.7, flex:1 }}
+          rows={2}
+        />
+        <button onClick={send} disabled={loading || !input.trim()} style={{ ...S.btn, ...S.btnP, padding:"14px 20px", opacity:(loading||!input.trim())?0.6:1, flexShrink:0 }}>
+          {loading ? <Spinner small /> : "إرسال ↑"}
+        </button>
       </div>
     </div>
   );
 }
 
-// ── SEARCH ──────────────────────────────────────────────
-function SearchPage({ systems, bank, initQ, results, setResults }) {
-  const [q, setQ] = useState(initQ || "");
-
-  useEffect(() => { if (initQ) { setQ(initQ); } }, [initQ]);
+// ── SEARCH PAGE ──────────────────────────────────────────
+function SearchPage({ systems, bank }) {
+  const [q, setQ] = useState("");
+  const [results, setResults] = useState(null);
 
   const doSearch = () => {
     const t = q.trim().toLowerCase();
     if (!t) return;
     const res = [];
     systems.forEach(s => {
-      if (s.name.toLowerCase().includes(t) || s.text.toLowerCase().includes(t)) {
-        const idx = s.text.toLowerCase().indexOf(t);
-        const snippet = idx >= 0 ? s.text.substring(Math.max(0,idx-60), idx+220) : s.text.substring(0,220);
-        res.push({ ref:"نظام — "+s.name, text:snippet, badge:"نظام", bc:"rgba(184,146,42,0.1)", btc:"#b8922a" });
+      const idx = s.text.toLowerCase().indexOf(t);
+      if (s.name.toLowerCase().includes(t) || idx >= 0) {
+        const snippet = idx >= 0 ? s.text.substring(Math.max(0,idx-80), idx+280) : s.text.substring(0,280);
+        res.push({ ref:"نظام — "+s.name, text:snippet, bc:"rgba(184,146,42,0.1)", btc:GOLD });
       }
     });
     bank.forEach(b => {
       if (b.title.toLowerCase().includes(t) || b.text.toLowerCase().includes(t))
-        res.push({ ref:b.type+" — "+b.title, text:b.text.substring(0,220), badge:b.type, bc:"rgba(59,130,246,0.1)", btc:"#2563eb" });
+        res.push({ ref:b.type+" — "+b.title, text:b.text.substring(0,280), bc:"rgba(59,130,246,0.1)", btc:"#2563eb" });
     });
     setResults(res);
   };
@@ -334,9 +403,9 @@ function SearchPage({ systems, bank, initQ, results, setResults }) {
     <div>
       <div style={{ ...S.card, padding:"20px", marginBottom:18 }}>
         <label style={S.label}>البحث في الأنظمة وبنك الخبرة</label>
-        <div style={{ display:"flex", gap:9, background:"#faf7f0", border:`1.5px solid rgba(184,146,42,0.22)`, borderRadius:9, padding:"7px 7px 7px 12px", alignItems:"center" }}>
-          <input value={q} onChange={e=>setQ(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doSearch()} placeholder="مصطلح — مادة — موضوع..." style={{ flex:1, background:"none", border:"none", outline:"none", color:"#2a1f0e", fontFamily:"'Tajawal',sans-serif", fontSize:13, direction:"rtl" }} />
-          <button onClick={doSearch} style={{ background:`linear-gradient(135deg,${GOLD},${GOLD_L})`, color:INK, border:"none", cursor:"pointer", padding:"8px 18px", borderRadius:7, fontFamily:"'Tajawal',sans-serif", fontSize:13, fontWeight:700 }}>🔍 بحث</button>
+        <div style={{ display:"flex", gap:9, background:"#faf7f0", border:"1.5px solid rgba(184,146,42,0.22)", borderRadius:9, padding:"7px 7px 7px 12px", alignItems:"center" }}>
+          <input value={q} onChange={e=>setQ(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doSearch()} placeholder="مادة — مصطلح — موضوع..." style={{ flex:1, background:"none", border:"none", outline:"none", color:"#2a1f0e", fontFamily:"'Tajawal',sans-serif", fontSize:13, direction:"rtl" }} />
+          <button onClick={doSearch} style={{ background:"linear-gradient(135deg,#b8922a,#d4a843)", color:INK, border:"none", cursor:"pointer", padding:"8px 18px", borderRadius:7, fontFamily:"'Tajawal',sans-serif", fontSize:13, fontWeight:700 }}>🔍 بحث</button>
         </div>
       </div>
       {results === null && <div style={{ textAlign:"center", padding:"52px 0", color:"#8a7a65" }}><div style={{ fontSize:38, opacity:.2 }}>🔍</div><div style={{ fontSize:13, marginTop:8 }}>أدخل كلمة بحث للبدء</div></div>}
@@ -347,286 +416,24 @@ function SearchPage({ systems, bank, initQ, results, setResults }) {
           onMouseLeave={e=>e.currentTarget.style.borderRightColor="transparent"}>
           <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:5 }}>
             <div style={{ fontSize:12, fontWeight:700, color:GOLD }} dangerouslySetInnerHTML={{__html:hi(r.ref)}} />
-            <span style={{ ...S.tag, background:r.bc, color:r.btc }}>{r.badge}</span>
+            <span style={{ ...S.tag, background:r.bc, color:r.btc }}>{r.ref.split("—")[0].trim()}</span>
           </div>
-          <div style={{ fontSize:13, color:"#2a1f0e", lineHeight:1.75 }} dangerouslySetInnerHTML={{__html:hi(r.text)+(r.text.length>=220?"...":"")}} />
+          <div style={{ fontSize:13, color:"#2a1f0e", lineHeight:1.75 }} dangerouslySetInnerHTML={{__html:hi(r.text)+(r.text.length>=280?"...":"")}} />
         </div>
       ))}
     </div>
   );
 }
 
-// ── ANALYZER ────────────────────────────────────────────
-function AnalyzerPage({ systems, callApi, loading, setLoading, result, setResult, stats, setStats, toast }) {
-  const [caseType, setCaseType] = useState("نزاع تجاري");
-  const [facts, setFacts] = useState("");
-  const [pos, setPos] = useState("مدعي");
-  const [notes, setNotes] = useState("");
-
-  const analyze = async () => {
-    if (!facts.trim()) { toast("⚠️ أدخل وقائع القضية"); return; }
-    setLoading(true);
-    const sysCtx = systems.length ? "الأنظمة المتاحة في المنصة: " + systems.map(s=>s.name).join("، ") : "";
-    // إرسال كل الأنظمة مضغوطة
-    const sysTexts = systems.map(s => {
-      const compressed = s.text.substring(0, 8000);
-      return "=== " + s.name + " ===\n" + compressed;
-    }).join("\n\n---\n\n");
-    const prompt = `أنت محامٍ قانوني سعودي متخصص. قدم تحليلاً قانونياً احترافياً دقيقاً باللغة العربية الفصحى.
-
-نوع القضية: ${caseType}
-موقف الموكل: ${pos}
-وقائع القضية:
-${facts}
-${notes ? "ملاحظات: " + notes : ""}
-${sysCtx}
-${sysTexts ? "\nمحتوى الأنظمة:\n" + sysTexts : ""}
-
-قدم التحليل في هذه الأقسام بالضبط:
-
-1. التكييف القانوني
-(وصف دقيق للمركز القانوني)
-
-2. النصوص النظامية المنطبقة
-(مواد محددة إن وجدت في الأنظمة المضافة)
-
-3. الدفوع الممكنة
-- دفع أول
-- دفع ثاني
-- دفع ثالث
-
-4. نقاط القوة
-- نقطة
-- نقطة
-
-5. نقاط الضعف والثغرات
-⚠ نقطة
-⚠ نقطة
-
-6. التوصية الاستراتيجية
-(توصية مختصرة وعملية)`;
-
-    try {
-      const text = await callApi(prompt);
-      setResult(parseAnalysis(text));
-      setStats(s => ({ ...s, cases: s.cases+1 }));
-      toast("✅ اكتمل التحليل");
-    } catch(e) {
-      if (e.message !== "NO_KEY" && e.message !== "BAD_KEY") toast("❌ خطأ في الاتصال بالـ API");
-    } finally { setLoading(false); }
-  };
-
-  return (
-    <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:20 }}>
-      <div>
-        <div style={{ ...S.card, padding:"22px", marginBottom:10 }}>
-          <div style={{ fontSize:14, fontWeight:800, color:"#2a1f0e", marginBottom:16 }}>بيانات القضية</div>
-          <Fg label="نوع القضية">
-            <select value={caseType} onChange={e=>setCaseType(e.target.value)} style={S.input}>
-              {["نزاع تجاري","نزاع عقاري","عمالي","مدني — تعويضات","جنائي","إداري","أحوال شخصية"].map(x=><option key={x}>{x}</option>)}
-            </select>
-          </Fg>
-          <Fg label="الوقائع والملابسات *">
-            <textarea value={facts} onChange={e=>setFacts(e.target.value)} placeholder="أدخل وقائع القضية بالتفصيل..." style={{ ...S.input, minHeight:155, resize:"vertical", lineHeight:1.75 }} />
-          </Fg>
-          <Fg label="موقفك">
-            <select value={pos} onChange={e=>setPos(e.target.value)} style={S.input}>
-              {["مدعي","مدعى عليه","محكّم"].map(x=><option key={x}>{x}</option>)}
-            </select>
-          </Fg>
-          <Fg label="ملاحظات إضافية" last>
-            <input value={notes} onChange={e=>setNotes(e.target.value)} placeholder="أي معلومة تريد مراعاتها..." style={S.input} />
-          </Fg>
-        </div>
-        <button onClick={analyze} disabled={loading} style={{ ...S.btn, ...S.btnP, width:"100%", justifyContent:"center", padding:"12px", opacity:loading?0.75:1 }}>
-          {loading ? <><Spinner /><span style={{marginRight:8}}>جاري التحليل...</span></> : "⚖️ تحليل الآن"}
-        </button>
-      </div>
-
-      <div style={{ background:INK, borderRadius:12, padding:"22px", minHeight:360, overflowY:"auto" }}>
-        {!result ? (
-          <div style={{ textAlign:"center", padding:"60px 0", color:"rgba(255,255,255,0.18)" }}>
-            <div style={{ fontSize:38, opacity:.4 }}>⚖️</div>
-            <div style={{ fontSize:13, marginTop:8 }}>سيظهر هنا التحليل القانوني</div>
-          </div>
-        ) : result.map((sec,i) => (
-          <div key={i} style={{ marginBottom:20 }}>
-            <div style={{ fontSize:10, fontWeight:700, color:GOLD, letterSpacing:"1px", textTransform:"uppercase", marginBottom:8, paddingBottom:6, borderBottom:"1px solid rgba(184,146,42,0.12)" }}>{sec.title}</div>
-            <div style={{ display:"flex", flexWrap:"wrap", gap:2 }}>
-              {sec.items.map((it,j) =>
-                it.type==="text"
-                  ? <div key={j} style={{ width:"100%", fontSize:13, lineHeight:1.85, color:"rgba(255,255,255,0.68)", marginBottom:4 }}>{it.text}</div>
-                  : <span key={j} style={{ display:"inline-flex", alignItems:"center", gap:5, background:it.neg?"rgba(239,68,68,0.09)":"rgba(34,197,94,0.09)", border:`1px solid ${it.neg?"rgba(239,68,68,0.18)":"rgba(34,197,94,0.18)"}`, color:it.neg?"#f87171":"#4ade80", padding:"4px 11px", borderRadius:20, fontSize:11.5, fontWeight:600, margin:"3px 3px 0 0" }}>{it.neg?"⚠":"✓"} {it.text}</span>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function parseAnalysis(raw) {
-  const sections = []; let cur = null;
-  raw.split("\n").filter(l=>l.trim()).forEach(line => {
-    const t = line.trim();
-    if (/^#+\s/.test(t)||/^\d+\.\s/.test(t)||/^[١٢٣٤٥٦٧٨٩]\.\s/.test(t)) {
-      if (cur) sections.push(cur);
-      cur = { title:t.replace(/^#+\s|^\d+\.\s|^[١٢٣٤٥٦٧٨٩]\.\s/,"").trim(), items:[] };
-    } else if (cur) {
-      if (t.startsWith("-")||t.startsWith("•")) cur.items.push({type:"pill",neg:false,text:t.replace(/^[-•]\s*/,"")});
-      else if (t.startsWith("⚠")) cur.items.push({type:"pill",neg:true,text:t.replace(/^⚠\s*/,"")});
-      else cur.items.push({type:"text",text:t});
-    }
-  });
-  if (cur) sections.push(cur);
-  return sections.length ? sections : [{title:"التحليل",items:[{type:"text",text:raw}]}];
-}
-
-// ── DRAFT ───────────────────────────────────────────────
-function DraftPage({ systems, callApi, loading, setLoading, result, setResult, memoType, setMemoType, stats, setStats, bank, setBank, toast }) {
-  const [court, setCourt] = useState("");
-  const [caseNum, setCaseNum] = useState("");
-  const [plaintiff, setPlaintiff] = useState("");
-  const [defendant, setDefendant] = useState("");
-  const [body, setBody] = useState("");
-
-  const gen = async () => {
-    if (!body.trim()) { toast("⚠️ أدخل موضوع المذكرة"); return; }
-    setLoading(true);
-
-    // إرسال كل الأنظمة مضغوطة
-    const sysTexts = systems.map(s => {
-      const compressed = s.text.substring(0, 8000);
-      return "=== " + s.name + " ===\n" + compressed;
-    }).join("\n\n---\n\n");
-
-    const styleGuide = `
-═══ بصمة الأسلوب — التزم بها حرفياً ═══
-أنت تكتب بأسلوب المحامي خلف التمران. هذه سماته الأساسية التي لا تحيد عنها:
-
-1. الخطاب المباشر للقاضي: خاطب "فضيلة ناظر الدعوى" أو "فضيلتكم" بشكل طبيعي داخل النص.
-2. أسلوب الرد والدحض: لا تكتفِ بتقرير الحق بل فكّك حجج الخصم ورقة ورقة وبيّن عجزه عن الإثبات.
-3. الربط بين النص والواقعة: لا تذكر مادة مجردة بل قل "المادة كذا قررت... وهو ما ينطبق على الواقعة لأن..."
-4. الجمل الختامية الحاسمة: أنهِ كل فقرة بجملة قاطعة مثل: "مما يفقدها حجيتها نظامًا" أو "لا تقوم على بينة معتبرة".
-5. التسلسل: أولاً — ثانياً — ثالثاً مع ترقيم داخلي 1، 2، 3 لكل نقطة.
-6. نبرة الثقة: استخدم "نتمسك بأن" و"يثبت لفضيلتكم" — ثقة بالحق دون صياغة متشنجة.
-7. البسملة في البداية دائماً.
-8. الطلبات في النهاية واضحة ومحددة.`;
-
-    const prompt = `أنت محامٍ قانوني سعودي محترف. اكتب مذكرة ${memoType} قانونية رسمية متكاملة باللغة العربية الفصحى.
-
-═══ بيانات المذكرة ═══
-المحكمة: ${court || "المحكمة المختصة"}
-رقم القضية: ${caseNum || "—"}
-مقدم المذكرة: ${plaintiff || "مقدم المذكرة"}
-المدعى عليه: ${defendant || "الطرف الآخر"}
-الموضوع والحجج:
-${body}
-
-${sysTexts ? `═══ الأنظمة المضافة — استخدمها حصراً للاستناد ═══
-${sysTexts}
-
-` : ""}═══ تعليمات صارمة لا تحيد عنها ═══
-${sysTexts ? `1. لا تذكر رقم أي مادة إلا إذا وجدت نصها الحرفي في الأنظمة المضافة أعلاه.
-2. عند الاستناد لمادة: اذكر رقمها الصحيح ثم استشهد بما جاء فيها من الأنظمة المضافة.
-3. إذا لم تجد مادة محددة في الأنظمة فاستخدم "وفقاً لأحكام النظام" دون ذكر رقم.
-4. لا تخترع أرقام مواد من ذاكرتك — هذا خطأ جسيم لا يُقبل.` : `1. استخدم المواد النظامية بتحفظ وأشر إلى أنها تحتاج مراجعة.`}
-5. اكتب نص المذكرة فقط بدون علامات markdown.
-${styleGuide}`;
-
-    try {
-      const text = await callApi(prompt);
-      setResult({ text, court, caseNum });
-      setStats(s => ({ ...s, memos: s.memos+1 }));
-      toast("✅ تم توليد المذكرة");
-    } catch(e) {
-      if (e.message !== "NO_KEY" && e.message !== "BAD_KEY") toast("❌ خطأ في الاتصال بالـ API");
-    } finally { setLoading(false); }
-  };
-
-  const copyMemo = () => {
-    if (!result) return;
-    navigator.clipboard.writeText(result.text).then(()=>toast("📋 تم نسخ المذكرة")).catch(()=>toast("⚠️ لم يتمكن من النسخ"));
-  };
-
-  const saveToBank = () => {
-    if (!result) return;
-    setBank(b => [{ id:Date.now(), type:"صيغة", title:`مذكرة ${memoType} — ${result.caseNum||"—"}`, text:result.text, date:today() }, ...b]);
-    toast("💾 تم الحفظ في بنك الخبرة");
-  };
-
-  return (
-    <div>
-      <div style={{ display:"flex", gap:7, marginBottom:18, flexWrap:"wrap" }}>
-        {["اعتراض","جوابية","نقض","ابتدائية","استئناف"].map(t => (
-          <button key={t} onClick={()=>setMemoType(t)} style={{ padding:"7px 16px", borderRadius:8, border:`1.5px solid ${memoType===t?INK:"rgba(184,146,42,0.22)"}`, background:memoType===t?INK:"#fff", color:memoType===t?GOLD_L:"#5a4a35", fontFamily:"'Tajawal',sans-serif", fontSize:13, fontWeight:600, cursor:"pointer" }}>{t}</button>
-        ))}
-      </div>
-      <div style={{ display:"grid", gridTemplateColumns:"310px 1fr", gap:20 }}>
-        <div>
-          <div style={{ ...S.card, padding:"20px" }}>
-            <Fg label="المحكمة"><input value={court} onChange={e=>setCourt(e.target.value)} placeholder="مثال: المحكمة التجارية بالدمام" style={S.input} /></Fg>
-            <Fg label="رقم القضية"><input value={caseNum} onChange={e=>setCaseNum(e.target.value)} placeholder="مثال: 1446/ت/12345" style={S.input} /></Fg>
-            <Fg label="مقدم المذكرة"><input value={plaintiff} onChange={e=>setPlaintiff(e.target.value)} placeholder="الاسم أو الجهة" style={S.input} /></Fg>
-            <Fg label="المدعى عليه"><input value={defendant} onChange={e=>setDefendant(e.target.value)} placeholder="الاسم أو الجهة" style={S.input} /></Fg>
-            <Fg label="موضوع المذكرة والحجج *" last>
-              <textarea value={body} onChange={e=>setBody(e.target.value)} placeholder="أدخل الوقائع والأسانيد..." style={{ ...S.input, minHeight:130, resize:"vertical", lineHeight:1.75 }} />
-            </Fg>
-          </div>
-          <button onClick={gen} disabled={loading} style={{ ...S.btn, ...S.btnP, width:"100%", justifyContent:"center", padding:"12px", marginTop:10, opacity:loading?0.75:1 }}>
-            {loading ? <><Spinner /><span style={{marginRight:8}}>جاري الصياغة...</span></> : "📝 توليد المذكرة"}
-          </button>
-        </div>
-        <div>
-          <div style={{ background:"#fff", border:`1px solid rgba(184,146,42,0.2)`, borderRadius:12, minHeight:400, padding:"26px 34px", fontFamily:"'Amiri',serif", fontSize:14.5, lineHeight:2.1, color:"#2a1f0e", direction:"rtl", overflowY:"auto" }}>
-            {result ? (
-              <>
-                <div style={{ textAlign:"center", borderBottom:`2px solid ${GOLD}`, paddingBottom:14, marginBottom:16 }}>
-                  <div style={{ fontSize:18, fontWeight:700 }}>مذكرة {memoType}</div>
-                  {result.caseNum && <div style={{ fontSize:12, color:"#8a7a65" }}>القضية رقم {result.caseNum}{result.court && " — " + result.court}</div>}
-                </div>
-                <div style={{ whiteSpace:"pre-wrap" }}>{result.text}</div>
-              </>
-            ) : (
-              <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", height:340, color:"#8a7a65" }}>
-                <div style={{ fontSize:44, opacity:.2 }}>📜</div>
-                <div style={{ fontSize:13, marginTop:10 }}>ستظهر هنا المذكرة المُنشأة</div>
-              </div>
-            )}
-          </div>
-          {result && (
-            <div style={{ display:"flex", gap:9, marginTop:10 }}>
-              <button onClick={copyMemo} style={{ ...S.btn, ...S.btnO, flex:1, justifyContent:"center" }}>📋 نسخ المذكرة</button>
-              <button onClick={saveToBank} style={{ ...S.btn, ...S.btnP, flex:1, justifyContent:"center" }}>💾 حفظ في بنك الخبرة</button>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ── SYSTEMS ─────────────────────────────────────────────
+// ── SYSTEMS PAGE ─────────────────────────────────────────
 function SystemsPage({ systems, setSystems, toast }) {
   const [viewIdx, setViewIdx] = useState(null);
-
-  const del = i => {
-    if (!confirm(`حذف "${systems[i].name}"؟`)) return;
-    setSystems(s => s.filter((_,j)=>j!==i));
-    toast("🗑 تم الحذف");
-  };
-
-  const copy = text => navigator.clipboard.writeText(text).then(()=>toast("📋 تم النسخ")).catch(()=>toast("⚠️ لم يتمكن من النسخ"));
+  const del = i => { if (!confirm(`حذف "${systems[i].name}"؟`)) return; setSystems(s=>s.filter((_,j)=>j!==i)); toast("🗑 تم الحذف"); };
+  const copy = text => navigator.clipboard.writeText(text).then(()=>toast("📋 تم النسخ")).catch(()=>toast("⚠️ استخدم Ctrl+C"));
 
   return (
     <div>
-      {systems.length === 0 && (
-        <div style={{ textAlign:"center", padding:"52px 0", color:"#8a7a65" }}>
-          <div style={{ fontSize:40, opacity:.2 }}>📋</div>
-          <div style={{ fontSize:13, marginTop:8 }}>لم تُضَف أنظمة — انقر "+ إضافة نظام" أعلاه</div>
-        </div>
-      )}
+      {systems.length === 0 && <div style={{ textAlign:"center", padding:"52px 0", color:"#8a7a65" }}><div style={{ fontSize:40, opacity:.2 }}>📋</div><div style={{ fontSize:13, marginTop:8 }}>لم تُضَف أنظمة — انقر "+ إضافة نظام" أعلاه</div></div>}
       <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:12 }}>
         {systems.map((s,i) => (
           <div key={s.id} style={{ ...S.card, padding:16, transition:"all .2s" }}
@@ -645,13 +452,10 @@ function SystemsPage({ systems, setSystems, toast }) {
           </div>
         ))}
       </div>
-
       {viewIdx !== null && systems[viewIdx] && (
         <Modal open title={systems[viewIdx].name} onClose={()=>setViewIdx(null)} wide>
-          <div style={{ background:"#faf7f0", borderRadius:9, padding:"16px 18px", fontSize:13.5, lineHeight:2, color:"#2a1f0e", maxHeight:"58vh", overflowY:"auto", whiteSpace:"pre-wrap", wordBreak:"break-word" }}>
-            {systems[viewIdx].text}
-          </div>
-          <div style={{ display:"flex", gap:9, marginTop:16, paddingTop:14, borderTop:`1px solid rgba(184,146,42,0.15)` }}>
+          <div style={{ background:"#faf7f0", borderRadius:9, padding:"16px 18px", fontSize:13.5, lineHeight:2, color:"#2a1f0e", maxHeight:"58vh", overflowY:"auto", whiteSpace:"pre-wrap", wordBreak:"break-word" }}>{systems[viewIdx].text}</div>
+          <div style={{ display:"flex", gap:9, marginTop:16, paddingTop:14, borderTop:"1px solid rgba(184,146,42,0.15)" }}>
             <button onClick={()=>copy(systems[viewIdx].text)} style={{ ...S.btn, ...S.btnP }}>📋 نسخ النص كاملاً</button>
             <button onClick={()=>setViewIdx(null)} style={{ ...S.btn, ...S.btnO }}>إغلاق</button>
           </div>
@@ -661,32 +465,27 @@ function SystemsPage({ systems, setSystems, toast }) {
   );
 }
 
-// ── BANK ────────────────────────────────────────────────
+// ── BANK PAGE ────────────────────────────────────────────
 function BankPage({ bank, setBank, bankFilter, setBankFilter, toast }) {
   const [viewIdx, setViewIdx] = useState(null);
   const tc = { حكم:{bg:"rgba(34,197,94,0.1)",c:"#16a34a"}, دفع:{bg:"rgba(59,130,246,0.1)",c:"#2563eb"}, صيغة:{bg:"rgba(184,146,42,0.1)",c:"#b8922a"}, ملاحظة:{bg:"rgba(239,68,68,0.1)",c:"#dc2626"} };
   const filtered = bankFilter==="all" ? bank : bank.filter(b=>b.type===bankFilter);
-  const copy = text => navigator.clipboard.writeText(text).then(()=>toast("📋 تم النسخ")).catch(()=>toast("⚠️ لم يتمكن من النسخ"));
+  const copy = text => navigator.clipboard.writeText(text).then(()=>toast("📋 تم النسخ")).catch(()=>toast("⚠️ استخدم Ctrl+C"));
   const del = i => { if (!confirm(`حذف "${bank[i].title}"؟`)) return; setBank(b=>b.filter((_,j)=>j!==i)); toast("🗑 تم الحذف"); };
 
   return (
     <div>
-      <div style={{ display:"flex", borderRadius:8, overflow:"hidden", border:`1px solid rgba(184,146,42,0.22)`, width:"fit-content", marginBottom:18 }}>
+      <div style={{ display:"flex", borderRadius:8, overflow:"hidden", border:"1px solid rgba(184,146,42,0.22)", width:"fit-content", marginBottom:18 }}>
         {[["all","الكل"],["حكم","أحكام"],["دفع","دفوع"],["صيغة","صيغ"],["ملاحظة","ملاحظات"]].map(([v,l]) => (
           <button key={v} onClick={()=>setBankFilter(v)} style={{ padding:"7px 17px", cursor:"pointer", fontFamily:"'Tajawal',sans-serif", fontSize:13, fontWeight:600, color:bankFilter===v?GOLD_L:"#5a4a35", background:bankFilter===v?INK:"#fff", border:"none" }}>{l}</button>
         ))}
       </div>
-
       {filtered.length === 0 ? (
-        <div style={{ textAlign:"center", padding:"52px 0", color:"#8a7a65" }}>
-          <div style={{ fontSize:40, opacity:.2 }}>🗂</div>
-          <div style={{ fontSize:13, marginTop:8 }}>{bankFilter==="all" ? "لا توجد عناصر — انقر \"+ إضافة عنصر\"" : "لا توجد عناصر من هذا النوع"}</div>
-        </div>
+        <div style={{ textAlign:"center", padding:"52px 0", color:"#8a7a65" }}><div style={{ fontSize:40, opacity:.2 }}>🗂</div><div style={{ fontSize:13, marginTop:8 }}>{bankFilter==="all"?"لا توجد عناصر بعد":"لا توجد عناصر من هذا النوع"}</div></div>
       ) : (
         <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:12 }}>
           {filtered.map(b => {
-            const ri = bank.indexOf(b);
-            const c = tc[b.type] || tc["صيغة"];
+            const ri = bank.indexOf(b); const c = tc[b.type]||tc["صيغة"];
             return (
               <div key={b.id} style={{ ...S.card, padding:15, borderRight:"3px solid transparent", transition:"all .18s" }}
                 onMouseEnter={e=>{e.currentTarget.style.borderRightColor=GOLD;e.currentTarget.style.boxShadow="0 4px 16px rgba(0,0,0,0.06)";}}
@@ -706,13 +505,10 @@ function BankPage({ bank, setBank, bankFilter, setBankFilter, toast }) {
           })}
         </div>
       )}
-
       {viewIdx !== null && bank[viewIdx] && (
         <Modal open title={bank[viewIdx].title} onClose={()=>setViewIdx(null)} wide>
-          <div style={{ background:"#faf7f0", borderRadius:9, padding:"16px 18px", fontSize:13.5, lineHeight:2, color:"#2a1f0e", maxHeight:"58vh", overflowY:"auto", whiteSpace:"pre-wrap", wordBreak:"break-word" }}>
-            {bank[viewIdx].text}
-          </div>
-          <div style={{ display:"flex", gap:9, marginTop:16, paddingTop:14, borderTop:`1px solid rgba(184,146,42,0.15)` }}>
+          <div style={{ background:"#faf7f0", borderRadius:9, padding:"16px 18px", fontSize:13.5, lineHeight:2, color:"#2a1f0e", maxHeight:"58vh", overflowY:"auto", whiteSpace:"pre-wrap", wordBreak:"break-word" }}>{bank[viewIdx].text}</div>
+          <div style={{ display:"flex", gap:9, marginTop:16, paddingTop:14, borderTop:"1px solid rgba(184,146,42,0.15)" }}>
             <button onClick={()=>copy(bank[viewIdx].text)} style={{ ...S.btn, ...S.btnP }}>📋 نسخ</button>
             <button onClick={()=>setViewIdx(null)} style={{ ...S.btn, ...S.btnO }}>إغلاق</button>
           </div>
@@ -722,7 +518,7 @@ function BankPage({ bank, setBank, bankFilter, setBankFilter, toast }) {
   );
 }
 
-// ── MODALS ──────────────────────────────────────────────
+// ── MODALS ───────────────────────────────────────────────
 function AddSysModal({ open, onClose, setSystems, toast }) {
   const [name, setName] = useState(""); const [text, setText] = useState(""); const [note, setNote] = useState("");
   const save = () => {
@@ -733,12 +529,12 @@ function AddSysModal({ open, onClose, setSystems, toast }) {
   };
   return (
     <Modal open={open} onClose={onClose} title="إضافة نظام جديد">
-      <Fg label="اسم النظام *"><input value={name} onChange={e=>setName(e.target.value)} placeholder="مثال: نظام المرافعات الشرعية" style={S.input} autoFocus /></Fg>
+      <Fg label="اسم النظام *"><input value={name} onChange={e=>setName(e.target.value)} placeholder="مثال: نظام العمل السعودي" style={S.input} autoFocus /></Fg>
       <Fg label="النص الكامل للنظام *">
         <textarea value={text} onChange={e=>setText(e.target.value)} placeholder={"الصق نص النظام كاملاً هنا\nيمكنك نسخه من PDF أو Word أو أي مصدر...\n\nالمادة الأولى: ...\nالمادة الثانية: ..."} style={{ ...S.input, minHeight:260, resize:"vertical", lineHeight:1.75 }} />
       </Fg>
       <Fg label="ملاحظة (اختياري)" last><input value={note} onChange={e=>setNote(e.target.value)} placeholder="مثال: صدر بالمرسوم الملكي رقم..." style={S.input} /></Fg>
-      <div style={{ display:"flex", gap:9, marginTop:18, paddingTop:14, borderTop:`1px solid rgba(184,146,42,0.15)` }}>
+      <div style={{ display:"flex", gap:9, marginTop:18, paddingTop:14, borderTop:"1px solid rgba(184,146,42,0.15)" }}>
         <button onClick={save} style={{ ...S.btn, ...S.btnP }}>✓ حفظ النظام</button>
         <button onClick={onClose} style={{ ...S.btn, ...S.btnO }}>إلغاء</button>
       </div>
@@ -759,7 +555,7 @@ function AddBankModal({ open, onClose, setBank, toast }) {
       <Fg label="النوع"><select value={type} onChange={e=>setType(e.target.value)} style={S.input}>{["حكم","دفع","صيغة","ملاحظة"].map(x=><option key={x}>{x}</option>)}</select></Fg>
       <Fg label="العنوان *"><input value={title} onChange={e=>setTitle(e.target.value)} placeholder="عنوان مختصر ودقيق" style={S.input} autoFocus /></Fg>
       <Fg label="المحتوى *" last><textarea value={text} onChange={e=>setText(e.target.value)} placeholder="أدخل النص..." style={{ ...S.input, minHeight:130, resize:"vertical", lineHeight:1.75 }} /></Fg>
-      <div style={{ display:"flex", gap:9, marginTop:18, paddingTop:14, borderTop:`1px solid rgba(184,146,42,0.15)` }}>
+      <div style={{ display:"flex", gap:9, marginTop:18, paddingTop:14, borderTop:"1px solid rgba(184,146,42,0.15)" }}>
         <button onClick={save} style={{ ...S.btn, ...S.btnP }}>✓ حفظ</button>
         <button onClick={onClose} style={{ ...S.btn, ...S.btnO }}>إلغاء</button>
       </div>
@@ -782,11 +578,11 @@ function SettingsModal({ open, onClose, apiKey, setApiKey, toast }) {
         <input type="password" value={k} onChange={e=>setK(e.target.value)} placeholder="sk-ant-api03-..." style={S.input} autoFocus />
       </Fg>
       <div style={{ fontSize:12, color:"#8a7a65", lineHeight:1.75, marginBottom:8 }}>
-        🔒 المفتاح يُحفظ في متصفحك فقط ولا يخرج لأي جهة غير Anthropic.<br/>
+        🔒 المفتاح يُحفظ في متصفحك فقط.<br/>
         احصل على مفتاح من: <a href="https://console.anthropic.com/settings/keys" target="_blank" style={{ color:GOLD }}>console.anthropic.com/settings/keys</a>
       </div>
       {apiKey && <div style={{ fontSize:12, color:"#16a34a", marginBottom:4 }}>✅ مفتاح محفوظ حالياً</div>}
-      <div style={{ display:"flex", gap:9, marginTop:14, paddingTop:14, borderTop:`1px solid rgba(184,146,42,0.15)` }}>
+      <div style={{ display:"flex", gap:9, marginTop:14, paddingTop:14, borderTop:"1px solid rgba(184,146,42,0.15)" }}>
         <button onClick={save} style={{ ...S.btn, ...S.btnP }}>✓ حفظ المفتاح</button>
         <button onClick={onClose} style={{ ...S.btn, ...S.btnO }}>إغلاق</button>
       </div>
