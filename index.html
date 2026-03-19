@@ -189,7 +189,7 @@ function App() {
           {page==="home" && <HomePage systems={systems} bank={bank} stats={stats} nav={nav} setSearchQ={setSearchQ} setPage={setPage} setSearchResults={setSearchResults} />}
           {page==="search" && <SearchPage systems={systems} bank={bank} initQ={searchQ} results={searchResults} setResults={setSearchResults} />}
           {page==="analyzer" && <AnalyzerPage systems={systems} callApi={callApi} loading={loading} setLoading={setLoading} result={analysisResult} setResult={setAnalysisResult} stats={stats} setStats={setStats} toast={toast} />}
-          {page==="draft" && <DraftPage callApi={callApi} loading={loading} setLoading={setLoading} result={memoResult} setResult={setMemoResult} memoType={memoType} setMemoType={setMemoType} stats={stats} setStats={setStats} bank={bank} setBank={setBank} toast={toast} />}
+          {page==="draft" && <DraftPage systems={systems} callApi={callApi} loading={loading} setLoading={setLoading} result={memoResult} setResult={setMemoResult} memoType={memoType} setMemoType={setMemoType} stats={stats} setStats={setStats} bank={bank} setBank={setBank} toast={toast} />}
           {page==="systems" && <SystemsPage systems={systems} setSystems={setSystems} toast={toast} />}
           {page==="bank" && <BankPage bank={bank} setBank={setBank} bankFilter={bankFilter} setBankFilter={setBankFilter} toast={toast} />}
         </div>
@@ -478,7 +478,7 @@ function parseAnalysis(raw) {
 }
 
 // ── DRAFT ───────────────────────────────────────────────
-function DraftPage({ callApi, loading, setLoading, result, setResult, memoType, setMemoType, stats, setStats, bank, setBank, toast }) {
+function DraftPage({ systems, callApi, loading, setLoading, result, setResult, memoType, setMemoType, stats, setStats, bank, setBank, toast }) {
   const [court, setCourt] = useState("");
   const [caseNum, setCaseNum] = useState("");
   const [plaintiff, setPlaintiff] = useState("");
@@ -488,8 +488,15 @@ function DraftPage({ callApi, loading, setLoading, result, setResult, memoType, 
   const gen = async () => {
     if (!body.trim()) { toast("⚠️ أدخل موضوع المذكرة"); return; }
     setLoading(true);
-    const prompt = `أنت محامٍ قانوني سعودي محترف. اكتب مذكرة ${memoType} قانونية رسمية متكاملة باللغة العربية الفصحى بأسلوب قضائي سعودي رفيع.
 
+    // استخرج نصوص الأنظمة المضافة كاملة
+    const sysTexts = systems.length
+      ? systems.map(s => `=== ${s.name} (النص الكامل) ===\n${s.text}`).join("\n\n---\n\n")
+      : "";
+
+    const prompt = `أنت محامٍ قانوني سعودي محترف ومتخصص. مهمتك كتابة مذكرة ${memoType} قانونية رسمية متكاملة باللغة العربية الفصحى بأسلوب قضائي سعودي رفيع.
+
+═══ بيانات المذكرة ═══
 المحكمة: ${court || "المحكمة المختصة"}
 رقم القضية: ${caseNum || "—"}
 مقدم المذكرة: ${plaintiff || "مقدم المذكرة"}
@@ -497,7 +504,16 @@ function DraftPage({ callApi, loading, setLoading, result, setResult, memoType, 
 الموضوع والحجج:
 ${body}
 
-اكتب المذكرة كاملة بالشكل الرسمي: بسملة — مقدمة — وقائع — أسانيد قانونية مع مواد نظامية — طلبات ختامية. اكتب نص المذكرة فقط بدون علامات تنسيق.`;
+${sysTexts ? `═══ الأنظمة المضافة — استخدمها حصراً للاستناد ═══
+${sysTexts}
+
+` : ""}═══ تعليمات صارمة لا تحيد عنها ═══
+${sysTexts ? `1. لا تذكر رقم أي مادة إلا إذا وجدت نصها الحرفي في الأنظمة المضافة أعلاه.
+2. عند الاستناد لمادة: اذكر رقمها الصحيح ثم اقتبس نصها الحرفي من الأنظمة المضافة.
+3. إذا لم تجد مادة محددة في الأنظمة المضافة فاستخدم صياغة "وفقاً لأحكام النظام" دون ذكر رقم.
+4. لا تخترع أرقام مواد من ذاكرتك — هذا خطأ جسيم.` : `1. استخدم المواد النظامية المعروفة مع التحفظ وذكر أنها تحتاج مراجعة.`}
+5. اكتب المذكرة بأسلوب قضائي سعودي رفيع: بسملة — مقدمة — وقائع مرقمة — أسانيد قانونية — حجج ودفوع — طلبات ختامية.
+6. اكتب نص المذكرة فقط بدون علامات تنسيق markdown.`;
 
     try {
       const text = await callApi(prompt);
