@@ -1,231 +1,86 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>منصة خلف | التمران القانونية الخاصة</title>
 </head>
 <body style="margin:0;padding:0;">
 <div id="root"></div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
-
 <script type="text/babel" data-presets="react">
-const { useState, useEffect, useRef, useMemo } = React;
+const { useState, useEffect, useRef } = React;
 
 const GOLD = "#b8922a";
 const GOLD_L = "#d4a843";
 const INK = "#0d1117";
 
-const STORAGE = {
-  sys: "kh_sys5",
-  bank: "kh_bank5",
-  stats: "kh_stats5",
-  key: "kh_apikey",
-  styleMemory: "kh_style_memory_v1",
-  pinnedCase: "kh_pinned_case_v1",
-  customInstructions: "kh_custom_instructions_v1"
-};
-
 const S = {
   app: { display:"flex", minHeight:"100vh", fontFamily:"'Tajawal',sans-serif", direction:"rtl", background:"#faf7f0" },
-  sidebar: { width:265, background:INK, display:"flex", flexDirection:"column", flexShrink:0, borderLeft:"1px solid rgba(184,146,42,0.15)" },
+  sidebar: { width:248, background:INK, display:"flex", flexDirection:"column", flexShrink:0, borderLeft:"1px solid rgba(184,146,42,0.15)" },
   sbBrand: { padding:"22px 18px 16px", borderBottom:"1px solid rgba(184,146,42,0.1)" },
-  sbSeal: { width:40, height:40, background:"linear-gradient(135deg,#b8922a,#d4a843)", borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center", fontFamily:"serif", fontSize:20, color:INK, fontWeight:700, marginBottom:10 },
+  sbSeal: { width:38, height:38, background:"linear-gradient(135deg,#b8922a,#d4a843)", borderRadius:9, display:"flex", alignItems:"center", justifyContent:"center", fontFamily:"serif", fontSize:19, color:INK, fontWeight:700, marginBottom:10 },
   sbNav: { padding:"14px 0", flex:1, overflowY:"auto" },
   sbSec: { fontSize:9, color:"rgba(184,146,42,0.5)", fontWeight:700, letterSpacing:"1.5px", padding:"10px 18px 4px", textTransform:"uppercase" },
   sbFooter: { padding:"12px 18px", borderTop:"1px solid rgba(184,146,42,0.08)" },
   main: { flex:1, display:"flex", flexDirection:"column", minWidth:0 },
-  topbar: { background:"rgba(250,247,240,0.95)", borderBottom:"1px solid rgba(184,146,42,0.18)", padding:"11px 22px", display:"flex", alignItems:"center", gap:12, flexWrap:"wrap" },
-  content: { padding:"22px", flex:1, overflowY:"auto" },
+  topbar: { background:"rgba(250,247,240,0.95)", borderBottom:"1px solid rgba(184,146,42,0.18)", padding:"11px 26px", display:"flex", alignItems:"center", gap:12 },
+  content: { padding:"24px 26px", flex:1, overflowY:"auto" },
   card: { background:"#fff", border:"1px solid rgba(184,146,42,0.2)", borderRadius:12 },
-  btn: { display:"inline-flex", alignItems:"center", justifyContent:"center", gap:6, padding:"8px 16px", borderRadius:8, fontFamily:"'Tajawal',sans-serif", fontSize:13, fontWeight:700, cursor:"pointer", border:"none", transition:"all .16s" },
+  btn: { display:"inline-flex", alignItems:"center", gap:6, padding:"8px 16px", borderRadius:8, fontFamily:"'Tajawal',sans-serif", fontSize:13, fontWeight:700, cursor:"pointer", border:"none", transition:"all .16s" },
   btnP: { background:"linear-gradient(135deg,#b8922a,#d4a843)", color:INK },
   btnO: { background:"transparent", color:"#5a4a35", border:"1.5px solid rgba(184,146,42,0.25)" },
   btnD: { background:"rgba(239,68,68,0.07)", color:"#dc2626", border:"1.5px solid rgba(239,68,68,0.18)" },
   input: { width:"100%", background:"#faf7f0", border:"1.5px solid rgba(184,146,42,0.22)", borderRadius:8, padding:"9px 12px", fontFamily:"'Tajawal',sans-serif", fontSize:13, color:"#2a1f0e", outline:"none", direction:"rtl", boxSizing:"border-box" },
   label: { display:"block", fontSize:12, fontWeight:700, color:"#5a4a35", marginBottom:5 },
-  tag: { display:"inline-block", padding:"2px 9px", borderRadius:20, fontSize:11, fontWeight:600 }
+  tag: { display:"inline-block", padding:"2px 9px", borderRadius:20, fontSize:11, fontWeight:600 },
 };
 
-const BASE_STYLE_GUIDE = `
-أنت المساعد القانوني الخاص بالمحامي خلف التمران.
+const STYLE_GUIDE = `أنت المساعد القانوني الخاص للمحامي خلف التمران. تكتب وتحلل بأسلوبه الخاص تماماً.
 
-═══ هوية المساعد ═══
-- مساعد قانوني عربي متخصص في الصياغة القضائية السعودية.
-- مهمتك ليست الدردشة العامة، بل إنتاج عمل قانوني قابل للاستخدام المهني.
-- اكتب بلغة عربية فصحى قوية، واضحة، منهجية، غير إنشائية، وغير سطحية.
-- لا تستعمل نبرة مترددة أو عامة إلا عند وجود نقص حقيقي في الوقائع أو النصوص.
+═══ أسلوب خلف التمران الذي تلتزم به ═══
+- تخاطب القاضي مباشرة: "فضيلة ناظر الدعوى" و"فضيلتكم"
+- تستخدم جملاً حاسمة: "هذه الدعوى تستند على صحيح النظام" — "ما زعمه المدعى عليه لا يقوم على سند صحيح من النظام" — "ما ذكره المدعي عبارة عن دعوى مرسلة لا ينهض بمثلها حق" — "المدعي لم يحرر دعواه"
+- تفكك حجج الخصم ورقة ورقة وتبين عجزه عن الإثبات
+- تختم كل فقرة بجملة قاطعة: "مما يفقدها حجيتها نظامًا" أو "لا تقوم على بينة معتبرة"
+- ترتب: أولاً — ثانياً — ثالثاً مع ترقيم داخلي 1، 2، 3
+- تبدأ المذكرات بالبسملة دائماً
+- نبرة الثقة: "نتمسك بأن" و"يثبت لفضيلتكم"
 
-═══ المنهج الملزم في التحليل ═══
-في المسائل القانونية لا تبدأ مباشرة بالنتيجة، بل اتبع الترتيب الآتي:
-1) استخلاص الوقائع ذات الأثر النظامي فقط
-2) التكييف القانوني الصحيح للنزاع
-3) تحديد عناصر الإثبات وما يلزم لإثبات كل عنصر
-4) بيان عبء الإثبات وعلى من يقع
-5) استخراج الدفوع الأصلية والاحتياطية
-6) تحليل ما قد يتمسك به الخصم والرد عليه
-7) بيان الأثر النظامي والنتيجة النهائية
+═══ قواعد الاستناد النظامي — الأهم ═══
+عندما يُرفق المستخدم نصوص أنظمة في رسالته:
+1. ابحث في النص المرفق عن المواد ذات الصلة بالموضوع
+2. اذكر رقم المادة الحرفي كما ورد في النص المرفق
+3. اقتبس نص المادة أو جوهرها مباشرة من النص المرفق
+4. اربط نص المادة بالواقعة: "نصت المادة (كذا) على أن... وهو ما يتحقق في واقعتنا لأن..."
+5. إذا لم تجد المادة في النص المرفق فقل "وفقاً لأحكام النظام" دون اختراع رقم
+6. لا تستخدم أرقام مواد من ذاكرتك العامة — فقط من النص المرفق
 
-═══ منهج كتابة المذكرات ═══
-إذا طلب المستخدم مذكرة، أو لائحة، أو اعتراضًا، أو جوابًا:
-- ابدأ بالبسملة
-- اجعل الصياغة قضائية سعودية رفيعة
-- خاطب المحكمة بوقار
-- رتب الأسباب: أولاً، ثانياً، ثالثاً
-- داخل كل سبب استخدم ترقيمًا منظمًا عند الحاجة
-- لا تكرر كلام الخصم بلا فائدة
-- فكك دعوى الخصم، وبين موضع الخلل في كل قول أو مستند أو استدلال
-- اختم كل سبب بنتيجة قانونية واضحة
+مثال صحيح: "نصت المادة (77) من نظام العمل على أنه إذا أنهى أحد الطرفين العقد تعسفياً ألزم بتعويض الطرف الآخر، وهو ما يتحقق في واقعتنا إذ أن المدعى عليه..."
+مثال خاطئ: ذكر أرقام مواد دون وجودها في النص المرفق.
 
-═══ عبارات أسلوبية معتمدة ═══
-استعمل عند ملاءمة السياق:
-- "يثبت لفضيلتكم"
-- "ولا ينهض بذلك سند معتبر"
-- "وهو ما يفقده حجيته نظاماً"
-- "ولا يقوم على بينة معتبرة"
-- "والمدعي لم يحرر دعواه تحريراً منتجاً"
-- "وهو قول مرسل لا يسنده دليل"
-- "ولا يغيّر من هذه النتيجة ما قد يتمسك به الخصم من..."
-- "مما يتعين معه رد هذا الدفع"
-- "وتأسيس الحكم على ذلك لا ينهض على أساس صحيح"
-
-═══ ضوابط الاستناد النظامي ═══
-- إذا أُرفقت نصوص أنظمة ضمن الرسالة أو الأنظمة المحددة في المنصة، فاعتمد عليها أولاً.
-- لا تختلق أرقام مواد.
-- لا تنسب مادة إلى نظام غير نظامها.
-- إذا ظهر رقم المادة صراحة في النص المرفق فاذكره.
-- إذا لم يظهر لك رقم المادة يقينًا، فقل: "وفقاً لأحكام النظام" أو "وفقاً للمبادئ النظامية ذات الصلة" دون اختراع.
-- إذا تعددت الأنظمة، فاربط كل مادة بنظامها الصحيح صراحة.
-
-═══ ما الذي يجب تجنبه ═══
-- الجواب العام
-- السرد الإنشائي
-- التكرار
-- المبالغة الخطابية
-- ذكر مواد غير متيقنة
-- اختلاق سوابق أو أحكام أو وقائع
-
-═══ قاعدة حاكمة ═══
-كل جواب يجب أن يكون:
-- مبنيًا على الوقائع
-- مبنيًا على النصوص المتاحة
-- منتجًا عمليًا
-- صالحًا للاستفادة المهنية المباشرة
-`;
-
-const WORK_MODES = {
-  free: {
-    label: "محادثة حرة",
-    intro: "أجب وفق السؤال كما ورد، مع الالتزام بالمنهج القانوني والأسلوب المهني."
-  },
-  analyze: {
-    label: "تحليل دعوى",
-    intro: `
-نفّذ المهمة بوصفها تحليل دعوى احترافي.
-رتب الجواب كالآتي:
-1) الوقائع المؤثرة
-2) التكييف القانوني
-3) العناصر الواجب إثباتها
-4) عبء الإثبات
-5) الدفوع الممكنة
-6) الثغرات أو المخاطر
-7) النتيجة والتوصية العملية
-`
-  },
-  memoReply: {
-    label: "مذكرة جوابية",
-    intro: `
-نفّذ المهمة بوصفها مذكرة جوابية قضائية.
-- ابدأ بالبسملة
-- صغ المذكرة بأسلوب قضائي سعودي رفيع
-- رتبها على أسباب واضحة
-- اربط كل سبب بالواقعة والأثر النظامي
-- اختم بطلبات واضحة
-`
-  },
-  memoObjection: {
-    label: "اعتراض / استئناف",
-    intro: `
-نفّذ المهمة بوصفها مذكرة اعتراض أو استئناف.
-- ابدأ بالبسملة
-- ركز على مواضع الخطأ في الحكم أو القرار
-- بيّن موضع المخالفة
-- بيّن وجه المخالفة
-- بيّن أثرها في النتيجة
-- لا تخرج إلى حشو لا يخدم الاعتراض
-`
-  },
-  defenses: {
-    label: "استخراج دفوع",
-    intro: `
-نفّذ المهمة بوصفها استخراجًا للدفوع.
-رتبها:
-1) دفوع شكلية
-2) دفوع موضوعية
-3) دفوع احتياطية
-4) ما يحتاج إلى بينة أو مستند
-5) أقوى الدفوع من حيث الأثر
-`
-  },
-  rewrite: {
-    label: "إعادة صياغة",
-    intro: `
-نفّذ المهمة بوصفها إعادة صياغة قانونية.
-- حافظ على المعنى
-- ارفع المستوى القضائي
-- اجعل العبارة محكمة ومباشرة
-- تجنب الإطالة غير المنتجة
-`
-  }
-};
-
-function today() {
-  return new Date().toLocaleDateString("ar-SA", { year:"numeric", month:"2-digit", day:"2-digit" });
-}
-
-function loadLS(k, def) {
-  try {
-    const v = localStorage.getItem(k);
-    return v ? JSON.parse(v) : def;
-  } catch {
-    return def;
-  }
-}
-
-function saveLS(k, v) {
-  try {
-    localStorage.setItem(k, JSON.stringify(v));
-  } catch {}
-}
+═══ عند تعدد الأنظمة ═══
+إذا أُرفق أكثر من نظام، فلكل نظام مجاله:
+- اربط كل مادة بنظامها الصحيح صراحةً: "المادة (كذا) من نظام العمل" — "المادة (كذا) من نظام الإثبات"
+- لا تخلط بين أحكام الأنظمة
+- استخدم كل نظام فيما يختص به: نظام العمل للحقوق العمالية، نظام الإثبات لطرق الإثبات وعبء الإثبات، نظام المرافعات للإجراءات، وهكذا
+- إذا كانت المسألة تتعلق بنظامين معاً، اذكر كليهما بوضوح`;
 
 function NavItem({ icon, label, id, active, onClick, badge }) {
   return (
-    <div
-      onClick={() => onClick(id)}
-      style={{
-        display:"flex",
-        alignItems:"center",
-        gap:10,
-        padding:"10px 18px",
-        cursor:"pointer",
-        borderRight:`3px solid ${active ? GOLD : "transparent"}`,
-        background: active ? "rgba(184,146,42,0.1)" : "transparent",
-        color: active ? GOLD_L : "rgba(255,255,255,0.55)",
-        fontSize:13,
-        fontWeight:500,
-        transition:"all .16s",
-        userSelect:"none"
-      }}
-    >
+    <div onClick={() => onClick(id)} style={{
+      display:"flex", alignItems:"center", gap:10, padding:"10px 18px", cursor:"pointer",
+      borderRight:`3px solid ${active ? GOLD : "transparent"}`,
+      background: active ? "rgba(184,146,42,0.1)" : "transparent",
+      color: active ? GOLD_L : "rgba(255,255,255,0.5)",
+      fontSize:13, fontWeight:500, transition:"all .16s", userSelect:"none"
+    }}>
       <span style={{ fontSize:15 }}>{icon}</span>
       <span style={{ flex:1 }}>{label}</span>
       {badge !== undefined && badge > 0 && (
-        <span style={{ background:"rgba(184,146,42,0.16)", color:GOLD_L, fontSize:10, fontWeight:700, padding:"1px 7px", borderRadius:20 }}>
-          {badge}
-        </span>
+        <span style={{ background:"rgba(184,146,42,0.16)", color:GOLD_L, fontSize:10, fontWeight:700, padding:"1px 7px", borderRadius:20 }}>{badge}</span>
       )}
     </div>
   );
@@ -234,17 +89,9 @@ function NavItem({ icon, label, id, active, onClick, badge }) {
 function Modal({ open, onClose, title, children, wide }) {
   if (!open) return null;
   return (
-    <div
-      onClick={onClose}
-      style={{ position:"fixed", inset:0, background:"rgba(13,17,23,0.5)", zIndex:999, display:"flex", alignItems:"center", justifyContent:"center", padding:"18px" }}
-    >
-      <div
-        onClick={e=>e.stopPropagation()}
-        style={{ background:"#fff", borderRadius:15, padding:24, width:"100%", maxWidth:wide?820:560, maxHeight:"88vh", overflowY:"auto", boxShadow:"0 8px 48px rgba(0,0,0,0.14)" }}
-      >
-        <div style={{ fontSize:15, fontWeight:800, color:"#2a1f0e", marginBottom:18, paddingBottom:13, borderBottom:"1px solid rgba(184,146,42,0.18)" }}>
-          {title}
-        </div>
+    <div onClick={onClose} style={{ position:"fixed", inset:0, background:"rgba(13,17,23,0.5)", zIndex:999, display:"flex", alignItems:"center", justifyContent:"center" }}>
+      <div onClick={e=>e.stopPropagation()} style={{ background:"#fff", borderRadius:15, padding:28, width:"90%", maxWidth:wide?700:540, maxHeight:"88vh", overflowY:"auto", boxShadow:"0 8px 48px rgba(0,0,0,0.14)" }}>
+        <div style={{ fontSize:15, fontWeight:800, color:"#2a1f0e", marginBottom:18, paddingBottom:13, borderBottom:"1px solid rgba(184,146,42,0.18)" }}>{title}</div>
         {children}
       </div>
     </div>
@@ -253,22 +100,17 @@ function Modal({ open, onClose, title, children, wide }) {
 
 function Spinner({ small }) {
   const s = small ? 18 : 24;
-  return (
-    <div style={{
-      width:s,
-      height:s,
-      border:`2.5px solid rgba(184,146,42,0.2)`,
-      borderTopColor:GOLD,
-      borderRadius:"50%",
-      animation:"spin .8s linear infinite",
-      flexShrink:0
-    }} />
-  );
+  return <div style={{ width:s, height:s, border:`2.5px solid rgba(184,146,42,0.2)`, borderTopColor:GOLD, borderRadius:"50%", animation:"spin .8s linear infinite", flexShrink:0 }} />;
 }
 
 function Fg({ label, children, last }) {
   return <div style={{ marginBottom:last?0:15 }}><label style={S.label}>{label}</label>{children}</div>;
 }
+
+const today = () => new Date().toLocaleDateString("ar-SA", { year:"numeric", month:"2-digit", day:"2-digit" });
+const STORAGE = { sys:"kh_sys4", bank:"kh_bank4", stats:"kh_stats4", key:"kh_apikey" };
+const loadLS = (k, def) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch { return def; } };
+const saveLS = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
 
 function App() {
   const [unlocked, setUnlocked] = useState(() => sessionStorage.getItem("kh_auth") === "1");
@@ -281,7 +123,7 @@ function App() {
       setUnlocked(true);
     } else {
       setPwError(true);
-      setTimeout(() => setPwError(false), 2200);
+      setTimeout(() => setPwError(false), 2000);
     }
   };
 
@@ -299,39 +141,11 @@ function App() {
             onChange={e => setPwInput(e.target.value)}
             onKeyDown={e => e.key === "Enter" && checkPassword()}
             placeholder="كلمة المرور"
-            style={{
-              width:"100%",
-              border:`1.5px solid ${pwError ? "#dc2626" : "rgba(184,146,42,0.3)"}`,
-              borderRadius:8,
-              padding:"10px 14px",
-              fontFamily:"'Tajawal',sans-serif",
-              fontSize:14,
-              color:"#2a1f0e",
-              outline:"none",
-              background:"#faf7f0",
-              boxSizing:"border-box",
-              textAlign:"center",
-              marginBottom:8
-            }}
+            style={{ width:"100%", border:`1.5px solid ${pwError ? "#dc2626" : "rgba(184,146,42,0.3)"}`, borderRadius:8, padding:"10px 14px", fontFamily:"'Tajawal',sans-serif", fontSize:14, color:"#2a1f0e", outline:"none", background:"#faf7f0", boxSizing:"border-box", textAlign:"center", marginBottom:8 }}
             autoFocus
           />
           {pwError && <div style={{ fontSize:12, color:"#dc2626", marginBottom:8 }}>كلمة المرور غير صحيحة</div>}
-          <button
-            onClick={checkPassword}
-            style={{
-              width:"100%",
-              background:"linear-gradient(135deg,#b8922a,#d4a843)",
-              color:"#0d1117",
-              border:"none",
-              borderRadius:8,
-              padding:"11px",
-              fontFamily:"'Tajawal',sans-serif",
-              fontSize:14,
-              fontWeight:700,
-              cursor:"pointer",
-              marginTop:4
-            }}
-          >
+          <button onClick={checkPassword} style={{ width:"100%", background:"linear-gradient(135deg,#b8922a,#d4a843)", color:"#0d1117", border:"none", borderRadius:8, padding:"11px", fontFamily:"'Tajawal',sans-serif", fontSize:14, fontWeight:700, cursor:"pointer", marginTop:4 }}>
             دخول
           </button>
         </div>
@@ -344,9 +158,6 @@ function App() {
   const [bank, setBank] = useState(() => loadLS(STORAGE.bank, []));
   const [stats, setStats] = useState(() => loadLS(STORAGE.stats, { cases:0, memos:0 }));
   const [apiKey, setApiKey] = useState(() => localStorage.getItem(STORAGE.key) || "");
-  const [styleMemory, setStyleMemory] = useState(() => localStorage.getItem(STORAGE.styleMemory) || "");
-  const [pinnedCase, setPinnedCase] = useState(() => localStorage.getItem(STORAGE.pinnedCase) || "");
-  const [customInstructions, setCustomInstructions] = useState(() => localStorage.getItem(STORAGE.customInstructions) || "");
   const [modal, setModal] = useState(null);
   const [notifyMsg, setNotifyMsg] = useState("");
   const [bankFilter, setBankFilter] = useState("all");
@@ -355,9 +166,6 @@ function App() {
   useEffect(() => { saveLS(STORAGE.sys, systems); }, [systems]);
   useEffect(() => { saveLS(STORAGE.bank, bank); }, [bank]);
   useEffect(() => { saveLS(STORAGE.stats, stats); }, [stats]);
-  useEffect(() => { localStorage.setItem(STORAGE.styleMemory, styleMemory || ""); }, [styleMemory]);
-  useEffect(() => { localStorage.setItem(STORAGE.pinnedCase, pinnedCase || ""); }, [pinnedCase]);
-  useEffect(() => { localStorage.setItem(STORAGE.customInstructions, customInstructions || ""); }, [customInstructions]);
 
   const toast = msg => {
     setNotifyMsg(msg);
@@ -365,74 +173,25 @@ function App() {
     notifTimer.current = setTimeout(() => setNotifyMsg(""), 3200);
   };
 
-  const callApi = async (messages, modeKey, selectedSystemsText, memoryText, pinnedCaseText, customText) => {
-    if (!apiKey) {
-      setModal("settings");
-      throw new Error("NO_KEY");
-    }
-
-    const mode = WORK_MODES[modeKey] || WORK_MODES.free;
-
-    const systemFull = [
-      BASE_STYLE_GUIDE,
-      "\n\n═══ وضع العمل الحالي ═══\n" + mode.intro,
-      memoryText ? "\n\n═══ نموذج الأسلوب المحفوظ للمستخدم ═══\n" + memoryText : "",
-      pinnedCaseText ? "\n\n═══ تعليمات / وقائع مثبتة للقضية الحالية ═══\n" + pinnedCaseText : "",
-      customText ? "\n\n═══ تعليمات إضافية خاصة بالمستخدم ═══\n" + customText : "",
-      selectedSystemsText ? "\n\n═══ الأنظمة والنصوص المحددة ═══\n" + selectedSystemsText : ""
-    ].join("");
-
+  const callApi = async (messages) => {
+    if (!apiKey) { setModal("settings"); throw new Error("NO_KEY"); }
     let r;
     try {
       r = await fetch("https://api.anthropic.com/v1/messages", {
         method:"POST",
-        headers: {
-          "Content-Type":"application/json",
-          "x-api-key":apiKey,
-          "anthropic-version":"2023-06-01",
-          "anthropic-dangerous-direct-browser-access":"true"
-        },
-        body: JSON.stringify({
-          model:"claude-sonnet-4-20250514",
-          max_tokens:2600,
-          system: systemFull,
-          messages
-        })
+        headers: { "Content-Type":"application/json", "x-api-key":apiKey, "anthropic-version":"2023-06-01", "anthropic-dangerous-direct-browser-access":"true" },
+        body: JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:2000, system: STYLE_GUIDE, messages })
       });
-    } catch {
-      toast("❌ خطأ في الشبكة");
-      throw new Error("NET_ERR");
-    }
-
-    if (r.status === 401) {
-      toast("❌ المفتاح غير صحيح");
-      setModal("settings");
-      throw new Error("BAD_KEY");
-    }
-    if (r.status === 429) {
-      toast("⚠️ تم تجاوز الحد — أعد المحاولة بعد قليل");
-      throw new Error("RATE");
-    }
-    if (!r.ok) {
-      toast("❌ خطأ: " + r.status);
-      throw new Error("ERR");
-    }
-
+    } catch { toast("❌ خطأ في الشبكة"); throw new Error("NET_ERR"); }
+    if (r.status === 401) { toast("❌ المفتاح غير صحيح"); setModal("settings"); throw new Error("BAD_KEY"); }
+    if (r.status === 429) { toast("⚠️ تجاوزت الحد — انتظر دقيقة"); throw new Error("RATE"); }
+    if (!r.ok) { toast("❌ خطأ: " + r.status); throw new Error("ERR"); }
     const d = await r.json();
-    if (d.error) {
-      toast("❌ " + d.error.message);
-      throw new Error("API");
-    }
+    if (d.error) { toast("❌ " + d.error.message); throw new Error("API"); }
     return d.content?.[0]?.text || "";
   };
 
-  const pageTitles = {
-    chat:"المساعد القانوني",
-    search:"البحث في الأنظمة",
-    systems:"الأنظمة واللوائح",
-    bank:"بنك الخبرة",
-    memory:"إدارة الأسلوب والذاكرة"
-  };
+  const pageTitles = { chat:"المساعد القانوني", search:"البحث في الأنظمة", systems:"الأنظمة واللوائح", bank:"بنك الخبرة" };
 
   return (
     <div style={S.app}>
@@ -443,7 +202,6 @@ function App() {
         ::-webkit-scrollbar { width:5px; }
         ::-webkit-scrollbar-thumb { background:rgba(184,146,42,0.2); border-radius:3px; }
         textarea:focus, input:focus, select:focus { border-color:#b8922a !important; background:#fff !important; outline:none; }
-        mark { background:rgba(184,146,42,0.2); color:#9a6f00; border-radius:3px; padding:0 2px; }
       `}</style>
 
       <aside style={S.sidebar}>
@@ -452,49 +210,23 @@ function App() {
           <div style={{ fontSize:14, fontWeight:800, color:"#fff" }}>منصة خلف</div>
           <div style={{ fontSize:10, color:GOLD, marginTop:2 }}>التمران القانونية الخاصة</div>
         </div>
-
         <nav style={S.sbNav}>
           <div style={S.sbSec}>الأدوات</div>
           <NavItem id="chat" icon="💬" label="المساعد القانوني" active={page==="chat"} onClick={setPage} />
           <NavItem id="search" icon="🔍" label="البحث في الأنظمة" active={page==="search"} onClick={setPage} />
-
           <div style={S.sbSec}>المكتبة</div>
           <NavItem id="systems" icon="📋" label="الأنظمة واللوائح" active={page==="systems"} onClick={setPage} badge={systems.length} />
           <NavItem id="bank" icon="🗂" label="بنك الخبرة" active={page==="bank"} onClick={setPage} badge={bank.length} />
-
-          <div style={S.sbSec}>التخصيص</div>
-          <NavItem id="memory" icon="🧠" label="إدارة الأسلوب والذاكرة" active={page==="memory"} onClick={setPage} />
         </nav>
-
         <div style={S.sbFooter}>
           <div style={{ display:"flex", alignItems:"center", gap:9, marginBottom:10 }}>
-            <div style={{ width:32, height:32, background:"linear-gradient(135deg,#b8922a,#d4a843)", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:800, color:INK }}>
-              خ
-            </div>
+            <div style={{ width:32, height:32, background:"linear-gradient(135deg,#b8922a,#d4a843)", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:800, color:INK }}>خ</div>
             <div>
               <div style={{ fontSize:13, fontWeight:700, color:"#fff" }}>خلف التمران</div>
               <div style={{ fontSize:10, color:GOLD }}>محامٍ — المنطقة الشرقية</div>
             </div>
           </div>
-
-          <button
-            onClick={()=>setModal("settings")}
-            style={{
-              width:"100%",
-              background:"rgba(184,146,42,0.08)",
-              border:"1px solid rgba(184,146,42,0.2)",
-              color:"rgba(255,255,255,0.7)",
-              padding:"8px 0",
-              borderRadius:8,
-              fontFamily:"'Tajawal',sans-serif",
-              fontSize:12,
-              cursor:"pointer",
-              display:"flex",
-              alignItems:"center",
-              justifyContent:"center",
-              gap:8
-            }}
-          >
+          <button onClick={()=>setModal("settings")} style={{ width:"100%", background:"rgba(184,146,42,0.08)", border:"1px solid rgba(184,146,42,0.2)", color:"rgba(255,255,255,0.6)", padding:"8px 0", borderRadius:8, fontFamily:"'Tajawal',sans-serif", fontSize:12, cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", gap:8 }}>
             ⚙️ إعدادات API
             <span style={{ width:7, height:7, borderRadius:"50%", background:apiKey?"#22c55e":"#dc2626" }} />
           </button>
@@ -504,53 +236,22 @@ function App() {
       <main style={S.main}>
         <header style={S.topbar}>
           <div style={{ fontSize:16, fontWeight:800, color:"#2a1f0e", flex:1 }}>{pageTitles[page]}</div>
-
           {page==="systems" && <button onClick={()=>setModal("addSys")} style={{...S.btn,...S.btnP}}>+ إضافة نظام</button>}
           {page==="bank" && <button onClick={()=>setModal("addBank")} style={{...S.btn,...S.btnP}}>+ إضافة عنصر</button>}
-
-          <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
-            {["chat","search","systems","bank","memory"].map(p => (
-              <div
-                key={p}
-                style={{ fontSize:11, color: page===p ? GOLD : "#8a7a65", cursor:"pointer", fontWeight: page===p ? 700 : 400 }}
-                onClick={()=>setPage(p)}
-              >
-                {{chat:"محادثة",search:"بحث",systems:"أنظمة",bank:"خبرة",memory:"ذاكرة"}[p]}
+          <div style={{ display:"flex", gap:8, alignItems:"center" }}>
+            {["chat","search","systems","bank"].map(p => (
+              <div key={p} style={{ fontSize:11, color: page===p ? GOLD : "#8a7a65", cursor:"pointer", fontWeight: page===p ? 700 : 400 }} onClick={()=>setPage(p)}>
+                {{chat:"محادثة",search:"بحث",systems:"أنظمة",bank:"خبرة"}[p]}
               </div>
             ))}
           </div>
         </header>
 
         <div style={page==="chat" ? {} : S.content}>
-          {page==="chat" && (
-            <ChatPage
-              systems={systems}
-              bank={bank}
-              callApi={callApi}
-              stats={stats}
-              setStats={setStats}
-              toast={toast}
-              setBank={setBank}
-              styleMemory={styleMemory}
-              pinnedCase={pinnedCase}
-              customInstructions={customInstructions}
-              setPinnedCase={setPinnedCase}
-            />
-          )}
+          {page==="chat" && <ChatPage systems={systems} bank={bank} callApi={callApi} stats={stats} setStats={setStats} toast={toast} setBank={setBank} />}
           {page==="search" && <SearchPage systems={systems} bank={bank} />}
           {page==="systems" && <SystemsPage systems={systems} setSystems={setSystems} toast={toast} />}
           {page==="bank" && <BankPage bank={bank} setBank={setBank} bankFilter={bankFilter} setBankFilter={setBankFilter} toast={toast} />}
-          {page==="memory" && (
-            <MemoryPage
-              styleMemory={styleMemory}
-              setStyleMemory={setStyleMemory}
-              pinnedCase={pinnedCase}
-              setPinnedCase={setPinnedCase}
-              customInstructions={customInstructions}
-              setCustomInstructions={setCustomInstructions}
-              toast={toast}
-            />
-          )}
         </div>
       </main>
 
@@ -559,20 +260,7 @@ function App() {
       <SettingsModal open={modal==="settings"} onClose={()=>setModal(null)} apiKey={apiKey} setApiKey={setApiKey} toast={toast} />
 
       {notifyMsg && (
-        <div style={{
-          position:"fixed",
-          bottom:20,
-          left:20,
-          background:INK,
-          color:"#fff",
-          padding:"11px 18px",
-          borderRadius:9,
-          fontSize:13,
-          fontWeight:600,
-          borderRight:`3px solid ${GOLD}`,
-          zIndex:9999,
-          maxWidth:340
-        }}>
+        <div style={{ position:"fixed", bottom:20, left:20, background:INK, color:"#fff", padding:"11px 18px", borderRadius:9, fontSize:13, fontWeight:600, borderRight:`3px solid ${GOLD}`, zIndex:9999, maxWidth:300 }}>
           {notifyMsg}
         </div>
       )}
@@ -580,248 +268,121 @@ function App() {
   );
 }
 
-function ChatPage({
-  systems,
-  bank,
-  callApi,
-  stats,
-  setStats,
-  toast,
-  setBank,
-  styleMemory,
-  pinnedCase,
-  customInstructions,
-  setPinnedCase
-}) {
+// ── CHAT PAGE ────────────────────────────────────────────
+function ChatPage({ systems, bank, callApi, stats, setStats, toast, setBank }) {
   const [messages, setMessages] = useState([
-    {
-      role:"assistant",
-      text:
-`مرحباً يا خلف — هذه النسخة المطورة من مساعدك القانوني.
-
-يمكنك الآن العمل بأوضاع جاهزة:
-• تحليل دعوى
-• مذكرة جوابية
-• اعتراض / استئناف
-• استخراج دفوع
-• إعادة صياغة قانونية
-
-كما يمكنك:
-• تحديد الأنظمة المراد الاستناد إليها
-• حفظ نموذج من أسلوبك
-• تثبيت وقائع أو تعليمات القضية الحالية من صفحة "إدارة الأسلوب والذاكرة"
-
-ابدأ بما تريد.`
-    }
+    { role:"assistant", text:"مرحباً يا خلف — أنا مساعدك القانوني. يمكنك:\n• إعطائي وقائع قضية لأحللها\n• طلب كتابة مذكرة بأسلوبك\n• إرفاق مذكرة وقول \"اكتب بنفس الأسلوب\"\n• تعديل أي جزء من المذكرة\n• سؤالي عن أي مسألة قانونية\n\nما الذي تريد العمل عليه؟" }
   ]);
-
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [selSystems, setSelSystems] = useState([]);
-  const [mode, setMode] = useState("free");
+  const [showSysSelect, setShowSysSelect] = useState(false);
   const bottomRef = useRef(null);
   const textareaRef = useRef(null);
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior:"smooth" }); }, [messages]);
 
-  const selectedSystemsText = useMemo(() => {
+  const getSysContext = () => {
+    if (!selSystems.length) return "";
     const selected = systems.filter(s => selSystems.includes(s.id));
     if (!selected.length) return "";
-    return selected.map(s => `--- ${s.name} ---\n${String(s.text || "").slice(0, 12000)}`).join("\n\n");
-  }, [systems, selSystems]);
-
-  const buildUserMessage = (text) => {
-    const modeLabel = WORK_MODES[mode]?.label || "محادثة حرة";
-    return `[وضع العمل: ${modeLabel}]\n\n${text}`;
+    return "\n\n=== الأنظمة المحددة للبحث ===\n" + selected.map(s => {
+      // Send first 8000 chars of each selected system
+      return `--- ${s.name} ---\n${s.text.substring(0, 8000)}`;
+    }).join("\n\n");
   };
 
   const send = async () => {
     const text = input.trim();
     if (!text || loading) return;
 
-    const visibleUserText = text;
-    const effectiveUserText = buildUserMessage(text);
+    const sysCtx = getSysContext();
+    const userText = text + (sysCtx ? sysCtx : "");
 
-    const newMessages = [...messages, { role:"user", text: visibleUserText }];
+    const newMessages = [...messages, { role:"user", text }];
     setMessages(newMessages);
     setInput("");
     setLoading(true);
 
-    const apiMessages = newMessages.map((m, idx) => ({
+    // Build API messages from history
+    const apiMessages = newMessages.map(m => ({
       role: m.role === "assistant" ? "assistant" : "user",
-      content:
-        m.role === "user" && idx === newMessages.length - 1
-          ? effectiveUserText
-          : m.text
+      content: m.role === "user" && m === newMessages[newMessages.length-1] ? userText : m.text
     }));
 
     try {
-      const reply = await callApi(
-        apiMessages,
-        mode,
-        selectedSystemsText,
-        styleMemory,
-        pinnedCase,
-        customInstructions
-      );
-
+      const reply = await callApi(apiMessages);
       setMessages(prev => [...prev, { role:"assistant", text:reply }]);
-
-      if (mode === "analyze" || visibleUserText.includes("حلل") || visibleUserText.includes("قضية") || visibleUserText.includes("وقائع")) {
-        setStats(s => ({ ...s, cases: s.cases + 1 }));
+      // Count if it looks like an analysis or memo
+      if (text.includes("حلل") || text.includes("قضية") || text.includes("وقائع")) {
+        setStats(s => ({ ...s, cases: s.cases+1 }));
       }
-      if (mode === "memoReply" || mode === "memoObjection" || visibleUserText.includes("مذكرة") || visibleUserText.includes("اعتراض")) {
-        setStats(s => ({ ...s, memos: s.memos + 1 }));
+      if (text.includes("مذكرة") || text.includes("اكتب")) {
+        setStats(s => ({ ...s, memos: s.memos+1 }));
       }
     } catch(e) {
       if (e.message !== "NO_KEY" && e.message !== "BAD_KEY") {
-        setMessages(prev => [...prev, { role:"assistant", text:"❌ حدث خطأ في الاتصال أو في الطلب. تحقق من مفتاح API ثم أعد المحاولة.", error:true }]);
+        setMessages(prev => [...prev, { role:"assistant", text:"❌ حدث خطأ في الاتصال. تحقق من مفتاح API وأعد المحاولة.", error:true }]);
       }
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   };
 
   const saveToBank = (text) => {
-    const title = text.substring(0, 70) + (text.length > 70 ? "..." : "");
+    const title = text.substring(0, 60) + (text.length > 60 ? "..." : "");
     setBank(b => [{ id:Date.now(), type:"صيغة", title, text, date:today() }, ...b]);
     toast("💾 تم الحفظ في بنك الخبرة");
   };
 
-  const saveAsStyleMemory = (text) => {
-    localStorage.setItem(STORAGE.styleMemory, text);
-    toast("🧠 تم حفظ هذا النص كنموذج أسلوب محلي");
-    window.location.reload();
-  };
-
   const quickPrompts = [
-    { label:"تحليل دعوى", mode:"analyze", text:"حلل هذه الوقائع تحليلاً قانونياً احترافياً:\n\n" },
-    { label:"مذكرة جوابية", mode:"memoReply", text:"اكتب مذكرة جوابية بأسلوبي للقضية التالية:\n\n" },
-    { label:"اعتراض", mode:"memoObjection", text:"اكتب مذكرة اعتراض أو استئناف قوية في القضية التالية:\n\n" },
-    { label:"دفوع ممكنة", mode:"defenses", text:"استخرج الدفوع النظامية الممكنة في هذه الدعوى:\n\n" },
-    { label:"إعادة صياغة", mode:"rewrite", text:"أعد صياغة النص الآتي بصياغة قضائية سعودية رفيعة:\n\n" },
-    { label:"اكتب بنفس الأسلوب", mode:"memoReply", text:"أرفق لك نموذجاً من أسلوبي، ثم اكتب على منواله:\n\nالنموذج:\n\nالمطلوب الجديد:\n" },
+    { label:"حلل قضية", text:"حلل هذه القضية واستخرج التكييف القانوني والمواد المنطبقة والدفوع الممكنة:\n\n" },
+    { label:"مذكرة اعتراض", text:"اكتب مذكرة اعتراض قانونية بأسلوبي للقضية التالية:\n\n" },
+    { label:"مذكرة جوابية", text:"اكتب مذكرة جوابية بأسلوبي للقضية التالية:\n\n" },
+    { label:"صِغ هذه الفقرة", text:"صِغ هذه الفقرة بأسلوب قضائي سعودي رفيع:\n\n" },
+    { label:"اكتب بنفس الأسلوب", text:"أرفق لك هذه المذكرة كنموذج لأسلوبي — اكتب مذكرة بنفس الأسلوب للقضية التالية:\n\nالنموذج:\n\nالقضية الجديدة:\n" },
+    { label:"دفوع ممكنة", text:"ما الدفوع النظامية الممكنة في هذه القضية:\n\n" },
   ];
 
-  const copyText = async (t) => {
-    try {
-      await navigator.clipboard.writeText(t);
-      toast("📋 تم النسخ");
-    } catch {
-      toast("⚠️ استخدم Ctrl+C");
-    }
-  };
-
   return (
-    <div style={{ display:"flex", flexDirection:"column", height:"calc(100vh - 58px)" }}>
-      <div style={{ background:"#fff", borderBottom:"1px solid rgba(184,146,42,0.15)", padding:"10px 18px", display:"flex", flexDirection:"column", gap:10 }}>
-        <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
-          <span style={{ fontSize:12, color:"#8a7a65" }}>وضع العمل:</span>
-          {Object.entries(WORK_MODES).map(([key, item]) => (
-            <button
-              key={key}
-              onClick={() => setMode(key)}
-              style={{
-                padding:"4px 12px",
-                borderRadius:20,
-                border:`1.5px solid ${mode===key ? GOLD : "rgba(184,146,42,0.25)"}`,
-                background:mode===key ? "rgba(184,146,42,0.1)" : "#faf7f0",
-                color:mode===key ? GOLD : "#8a7a65",
-                fontSize:11.5,
-                fontWeight:700,
-                cursor:"pointer"
-              }}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-
-        <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
-          <span style={{ fontSize:12, color:"#8a7a65" }}>الأنظمة المحددة:</span>
-          {systems.length === 0 ? (
-            <span style={{ fontSize:12, color:"#8a7a65" }}>لم تُضف أنظمة بعد</span>
-          ) : systems.map(s => (
-            <button
-              key={s.id}
-              onClick={() => setSelSystems(prev => prev.includes(s.id) ? prev.filter(x=>x!==s.id) : [...prev, s.id])}
-              style={{
-                padding:"3px 12px",
-                borderRadius:20,
-                border:`1.5px solid ${selSystems.includes(s.id) ? GOLD : "rgba(184,146,42,0.25)"}`,
-                background:selSystems.includes(s.id) ? "rgba(184,146,42,0.1)" : "#faf7f0",
-                color:selSystems.includes(s.id) ? GOLD : "#8a7a65",
-                fontSize:11.5,
-                fontWeight:600,
-                cursor:"pointer"
-              }}
-            >
-              {selSystems.includes(s.id) ? "✓ " : ""}{s.name}
-            </button>
-          ))}
-        </div>
-
-        {(styleMemory || pinnedCase) && (
-          <div style={{ display:"flex", gap:8, alignItems:"center", flexWrap:"wrap" }}>
-            {styleMemory && (
-              <span style={{ ...S.tag, background:"rgba(59,130,246,0.1)", color:"#2563eb" }}>
-                نموذج أسلوب محفوظ
-              </span>
-            )}
-            {pinnedCase && (
-              <span style={{ ...S.tag, background:"rgba(34,197,94,0.1)", color:"#16a34a" }}>
-                وقائع/تعليمات مثبتة للقضية الحالية
-              </span>
-            )}
-            {pinnedCase && (
-              <button
-                onClick={() => { setPinnedCase(""); toast("🧹 تم إلغاء التثبيت"); }}
-                style={{ ...S.btn, ...S.btnO, fontSize:11, padding:"4px 10px" }}
-              >
-                إلغاء تثبيت القضية
-              </button>
-            )}
-          </div>
-        )}
+    <div style={{ display:"flex", flexDirection:"column", height:"calc(100vh - 52px)" }}>
+      {/* System selector bar */}
+      <div style={{ background:"#fff", borderBottom:"1px solid rgba(184,146,42,0.15)", padding:"8px 20px", display:"flex", alignItems:"center", gap:10, flexWrap:"wrap" }}>
+        <span style={{ fontSize:12, color:"#8a7a65", flexShrink:0 }}>الأنظمة للبحث:</span>
+        {systems.length === 0 ? (
+          <span style={{ fontSize:12, color:"#8a7a65" }}>لم تُضَف أنظمة بعد</span>
+        ) : systems.map(s => (
+          <button key={s.id} onClick={() => setSelSystems(prev => prev.includes(s.id) ? prev.filter(x=>x!==s.id) : [...prev, s.id])}
+            style={{ padding:"3px 12px", borderRadius:20, border:`1.5px solid ${selSystems.includes(s.id) ? GOLD : "rgba(184,146,42,0.25)"}`, background:selSystems.includes(s.id) ? "rgba(184,146,42,0.1)" : "#faf7f0", color:selSystems.includes(s.id) ? GOLD : "#8a7a65", fontSize:11.5, fontWeight:600, cursor:"pointer", transition:"all .15s" }}>
+            {selSystems.includes(s.id) ? "✓ " : ""}{s.name}
+          </button>
+        ))}
       </div>
 
+      {/* Messages */}
       <div style={{ flex:1, overflowY:"auto", padding:"20px 24px", display:"flex", flexDirection:"column", gap:16 }}>
         {messages.map((m, i) => (
           <div key={i} style={{ display:"flex", flexDirection:"column", alignItems: m.role==="user" ? "flex-end" : "flex-start", gap:4 }}>
-            <div
-              style={{
-                maxWidth:"85%",
-                background: m.role==="user" ? "linear-gradient(135deg,#b8922a,#d4a843)" : m.error ? "rgba(239,68,68,0.08)" : "#fff",
-                color: m.role==="user" ? INK : "#2a1f0e",
-                border: m.role==="user" ? "none" : m.error ? "1px solid rgba(239,68,68,0.2)" : "1px solid rgba(184,146,42,0.18)",
-                borderRadius: m.role==="user" ? "14px 14px 4px 14px" : "14px 14px 14px 4px",
-                padding:"12px 16px",
-                fontSize:13.5,
-                lineHeight:1.9,
-                whiteSpace:"pre-wrap",
-                wordBreak:"break-word",
-                fontFamily: m.role==="assistant" ? "'Amiri',serif" : "'Tajawal',sans-serif"
-              }}
-            >
+            <div style={{
+              maxWidth:"82%",
+              background: m.role==="user" ? "linear-gradient(135deg,#b8922a,#d4a843)" : m.error ? "rgba(239,68,68,0.08)" : "#fff",
+              color: m.role==="user" ? INK : "#2a1f0e",
+              border: m.role==="user" ? "none" : m.error ? "1px solid rgba(239,68,68,0.2)" : "1px solid rgba(184,146,42,0.18)",
+              borderRadius: m.role==="user" ? "14px 14px 4px 14px" : "14px 14px 14px 4px",
+              padding:"12px 16px",
+              fontSize:13.5,
+              lineHeight:1.85,
+              whiteSpace:"pre-wrap",
+              wordBreak:"break-word",
+              fontFamily: m.role==="assistant" ? "'Amiri',serif" : "'Tajawal',sans-serif",
+            }}>
               {m.text}
             </div>
-
             {m.role==="assistant" && !m.error && i > 0 && (
-              <div style={{ display:"flex", gap:5, flexWrap:"wrap" }}>
-                <button onClick={() => saveToBank(m.text)} style={{ fontSize:11, color:"#8a7a65", background:"none", border:"none", cursor:"pointer", padding:"2px 6px" }}>
-                  💾 حفظ في بنك الخبرة
-                </button>
-                <button onClick={() => saveAsStyleMemory(m.text)} style={{ fontSize:11, color:"#8a7a65", background:"none", border:"none", cursor:"pointer", padding:"2px 6px" }}>
-                  🧠 اجعله نموذجًا لأسلوبي
-                </button>
-                <button onClick={() => copyText(m.text)} style={{ fontSize:11, color:"#8a7a65", background:"none", border:"none", cursor:"pointer", padding:"2px 6px" }}>
-                  📋 نسخ
-                </button>
-              </div>
+              <button onClick={() => saveToBank(m.text)} style={{ fontSize:11, color:"#8a7a65", background:"none", border:"none", cursor:"pointer", padding:"2px 6px" }}>
+                💾 حفظ في بنك الخبرة
+              </button>
             )}
           </div>
         ))}
-
         {loading && (
           <div style={{ display:"flex", alignItems:"center", gap:10, padding:"10px 0" }}>
             <Spinner small />
@@ -831,42 +392,30 @@ function ChatPage({
         <div ref={bottomRef} />
       </div>
 
-      <div style={{ padding:"8px 18px", display:"flex", gap:7, flexWrap:"wrap", borderTop:"1px solid rgba(184,146,42,0.1)", background:"#faf7f0" }}>
+      {/* Quick prompts */}
+      <div style={{ padding:"8px 20px", display:"flex", gap:7, flexWrap:"wrap", borderTop:"1px solid rgba(184,146,42,0.1)", background:"#faf7f0" }}>
         {quickPrompts.map((p,i) => (
-          <button
-            key={i}
-            onClick={() => { setMode(p.mode); setInput(p.text); textareaRef.current?.focus(); }}
-            style={{
-              padding:"4px 12px",
-              borderRadius:20,
-              border:"1.5px solid rgba(184,146,42,0.25)",
-              background:"#fff",
-              color:"#5a4a35",
-              fontSize:12,
-              fontWeight:600,
-              cursor:"pointer"
-            }}
-          >
+          <button key={i} onClick={() => { setInput(p.text); textareaRef.current?.focus(); }}
+            style={{ padding:"4px 12px", borderRadius:20, border:"1.5px solid rgba(184,146,42,0.25)", background:"#fff", color:"#5a4a35", fontSize:12, fontWeight:600, cursor:"pointer", transition:"all .15s" }}
+            onMouseEnter={e=>{e.currentTarget.style.borderColor=GOLD;e.currentTarget.style.color=GOLD;}}
+            onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(184,146,42,0.25)";e.currentTarget.style.color="#5a4a35";}}>
             {p.label}
           </button>
         ))}
       </div>
 
-      <div style={{ padding:"12px 18px", background:"#fff", borderTop:"1px solid rgba(184,146,42,0.15)", display:"flex", gap:10, alignItems:"flex-end" }}>
+      {/* Input */}
+      <div style={{ padding:"12px 20px", background:"#fff", borderTop:"1px solid rgba(184,146,42,0.15)", display:"flex", gap:10, alignItems:"flex-end" }}>
         <textarea
           ref={textareaRef}
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
-          placeholder="اكتب الوقائع أو النص أو الطلب القانوني... (Enter للإرسال، Shift+Enter لسطر جديد)"
-          style={{ ...S.input, minHeight:56, maxHeight:200, resize:"none", lineHeight:1.75, flex:1 }}
+          placeholder="اكتب سؤالك أو وقائع القضية أو اطلب كتابة مذكرة... (Enter للإرسال، Shift+Enter لسطر جديد)"
+          style={{ ...S.input, minHeight:52, maxHeight:180, resize:"none", lineHeight:1.7, flex:1 }}
           rows={2}
         />
-        <button
-          onClick={send}
-          disabled={loading || !input.trim()}
-          style={{ ...S.btn, ...S.btnP, padding:"14px 18px", opacity:(loading||!input.trim())?0.6:1, flexShrink:0 }}
-        >
+        <button onClick={send} disabled={loading || !input.trim()} style={{ ...S.btn, ...S.btnP, padding:"14px 20px", opacity:(loading||!input.trim())?0.6:1, flexShrink:0 }}>
           {loading ? <Spinner small /> : "إرسال ↑"}
         </button>
       </div>
@@ -874,6 +423,7 @@ function ChatPage({
   );
 }
 
+// ── SEARCH PAGE ──────────────────────────────────────────
 function SearchPage({ systems, bank }) {
   const [q, setQ] = useState("");
   const [results, setResults] = useState(null);
@@ -884,43 +434,43 @@ function SearchPage({ systems, bank }) {
     const res = [];
 
     systems.forEach(s => {
-      const text = String(s.text || "");
+      // تقسيم النظام إلى مواد — نبحث عن "المادة" متبوعة برقم
+      const text = s.text;
       const articlePattern = "المادة";
       let searchPos = 0;
       const articleStarts = [];
-
+      
       while (true) {
         const found = text.indexOf(articlePattern, searchPos);
         if (found === -1) break;
-        const after = text.substring(found + articlePattern.length, found + articlePattern.length + 6).trim();
-        if (after) articleStarts.push(found);
+        // تأكد أن التالي رقم أو قوس
+        const after = text.substring(found + articlePattern.length, found + articlePattern.length + 5).trim();
+        if (after && (after[0] >= '0' && after[0] <= '9' || after[0] === '(' || after[0] === 'ا')) {
+          articleStarts.push(found);
+        }
         searchPos = found + 1;
       }
 
       if (articleStarts.length === 0) {
+        // لا توجد مواد — ابحث في النص كله
         if (text.toLowerCase().includes(t)) {
           const idx = text.toLowerCase().indexOf(t);
-          res.push({
-            ref: "نظام — " + s.name,
-            text: text.substring(Math.max(0, idx-70), idx+500),
-            fullText: text,
-            bc: "rgba(184,146,42,0.1)",
-            btc: GOLD
-          });
+          res.push({ ref: "نظام — " + s.name, text: text.substring(Math.max(0, idx-50), idx+400), fullText: text, bc: "rgba(184,146,42,0.1)", btc: GOLD });
         }
         return;
       }
 
+      // لكل مادة
       for (let i = 0; i < articleStarts.length; i++) {
         const artStart = articleStarts[i];
         const artEnd = i + 1 < articleStarts.length ? articleStarts[i+1] : text.length;
         const artText = text.substring(artStart, artEnd).trim();
-
+        
         if (artText.toLowerCase().includes(t)) {
-          const firstLine = artText.split("\n")[0].trim().substring(0, 80);
+          const firstLine = artText.split("\n")[0].trim().substring(0, 60);
           res.push({
             ref: "نظام — " + s.name + " — " + firstLine,
-            text: artText.substring(0, 800),
+            text: artText.substring(0, 600),
             fullText: artText,
             bc: "rgba(184,146,42,0.1)",
             btc: GOLD
@@ -930,35 +480,18 @@ function SearchPage({ systems, bank }) {
     });
 
     bank.forEach(b => {
-      const title = String(b.title || "");
-      const text = String(b.text || "");
-      if (title.toLowerCase().includes(t) || text.toLowerCase().includes(t)) {
-        res.push({
-          ref: b.type + " — " + b.title,
-          text: text.substring(0, 500),
-          fullText: text,
-          bc: "rgba(59,130,246,0.1)",
-          btc: "#2563eb"
-        });
-      }
+      if (b.title.toLowerCase().includes(t) || b.text.toLowerCase().includes(t))
+        res.push({ ref: b.type + " — " + b.title, text: b.text.substring(0, 400), fullText: b.text, bc: "rgba(59,130,246,0.1)", btc: "#2563eb" });
     });
 
     setResults(res);
   };
 
-  const hi = (txt) => {
-    if (!q.trim()) return txt;
-    const safe = q.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    return String(txt || "").replace(new RegExp(safe, "gi"), m => `<mark>${m}</mark>`);
-  };
 
-  const copyText = async (t) => {
-    try {
-      await navigator.clipboard.writeText(t);
-      alert("تم النسخ");
-    } catch {
-      alert("استخدم Ctrl+C");
-    }
+  const hi = txt => {
+    if (!q.trim()) return txt;
+    const safe = q.trim().replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+    return txt.replace(new RegExp(safe,"gi"), m => `<mark style="background:rgba(184,146,42,0.2);color:#b8922a;border-radius:3px;padding:0 2px;">${m}</mark>`);
   };
 
   return (
@@ -966,111 +499,63 @@ function SearchPage({ systems, bank }) {
       <div style={{ ...S.card, padding:"20px", marginBottom:18 }}>
         <label style={S.label}>البحث في الأنظمة وبنك الخبرة</label>
         <div style={{ display:"flex", gap:9, background:"#faf7f0", border:"1.5px solid rgba(184,146,42,0.22)", borderRadius:9, padding:"7px 7px 7px 12px", alignItems:"center" }}>
-          <input
-            value={q}
-            onChange={e=>setQ(e.target.value)}
-            onKeyDown={e=>e.key==="Enter"&&doSearch()}
-            placeholder="مادة — مصطلح — موضوع — عبارة..."
-            style={{ flex:1, background:"none", border:"none", outline:"none", color:"#2a1f0e", fontFamily:"'Tajawal',sans-serif", fontSize:13, direction:"rtl" }}
-          />
-          <button onClick={doSearch} style={{ background:"linear-gradient(135deg,#b8922a,#d4a843)", color:INK, border:"none", cursor:"pointer", padding:"8px 18px", borderRadius:7, fontFamily:"'Tajawal',sans-serif", fontSize:13, fontWeight:700 }}>
-            🔍 بحث
-          </button>
+          <input value={q} onChange={e=>setQ(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doSearch()} placeholder="مادة — مصطلح — موضوع..." style={{ flex:1, background:"none", border:"none", outline:"none", color:"#2a1f0e", fontFamily:"'Tajawal',sans-serif", fontSize:13, direction:"rtl" }} />
+          <button onClick={doSearch} style={{ background:"linear-gradient(135deg,#b8922a,#d4a843)", color:INK, border:"none", cursor:"pointer", padding:"8px 18px", borderRadius:7, fontFamily:"'Tajawal',sans-serif", fontSize:13, fontWeight:700 }}>🔍 بحث</button>
         </div>
       </div>
-
-      {results === null && (
-        <div style={{ textAlign:"center", padding:"52px 0", color:"#8a7a65" }}>
-          <div style={{ fontSize:38, opacity:.2 }}>🔍</div>
-          <div style={{ fontSize:13, marginTop:8 }}>أدخل كلمة بحث للبدء</div>
-        </div>
-      )}
-
-      {results && results.length === 0 && (
-        <div style={{ textAlign:"center", padding:"52px 0", color:"#8a7a65" }}>
-          <div style={{ fontSize:38, opacity:.2 }}>🔍</div>
-          <div style={{ fontSize:13, marginTop:8 }}>لم يُعثر على نتائج</div>
-        </div>
-      )}
-
+      {results === null && <div style={{ textAlign:"center", padding:"52px 0", color:"#8a7a65" }}><div style={{ fontSize:38, opacity:.2 }}>🔍</div><div style={{ fontSize:13, marginTop:8 }}>أدخل كلمة بحث للبدء</div></div>}
+      {results && results.length === 0 && <div style={{ textAlign:"center", padding:"52px 0", color:"#8a7a65" }}><div style={{ fontSize:38, opacity:.2 }}>🔍</div><div style={{ fontSize:13, marginTop:8 }}>لم يُعثر على نتائج</div></div>}
       {results && results.map((r,i) => (
-        <div key={i} style={{ ...S.card, padding:"15px 18px", marginBottom:9, borderRight:"3px solid transparent", transition:"all .18s" }}>
-          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:8, gap:8, flexWrap:"wrap" }}>
+        <div key={i} style={{ ...S.card, padding:"15px 18px", marginBottom:9, borderRight:"3px solid transparent", transition:"all .18s" }}
+          onMouseEnter={e=>e.currentTarget.style.borderRightColor=GOLD}
+          onMouseLeave={e=>e.currentTarget.style.borderRightColor="transparent"}>
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:8 }}>
             <div style={{ fontSize:12, fontWeight:700, color:GOLD }} dangerouslySetInnerHTML={{__html:hi(r.ref)}} />
-            <div style={{ display:"flex", gap:6, alignItems:"center", flexWrap:"wrap" }}>
+            <div style={{ display:"flex", gap:6, alignItems:"center" }}>
               <span style={{ ...S.tag, background:r.bc, color:r.btc }}>{r.ref.split("—")[0].trim()}</span>
-              <button
-                onClick={()=>copyText(r.fullText||r.text)}
-                style={{ padding:"3px 10px", borderRadius:6, border:"1px solid rgba(184,146,42,0.3)", background:"none", color:GOLD, fontSize:11, cursor:"pointer", fontFamily:"'Tajawal',sans-serif" }}
-              >
+              <button onClick={()=>navigator.clipboard.writeText(r.fullText||r.text).then(()=>alert("تم النسخ")).catch(()=>alert("استخدم Ctrl+C"))}
+                style={{ padding:"3px 10px", borderRadius:6, border:"1px solid rgba(184,146,42,0.3)", background:"none", color:GOLD, fontSize:11, cursor:"pointer", fontFamily:"'Tajawal',sans-serif" }}>
                 📋 نسخ
               </button>
             </div>
           </div>
-
-          <div
-            style={{ fontSize:13, color:"#2a1f0e", lineHeight:1.85, whiteSpace:"pre-wrap", maxHeight:220, overflowY:"auto", background:"#faf7f0", borderRadius:6, padding:"8px 10px" }}
-            dangerouslySetInnerHTML={{__html:hi(r.text)+(r.fullText && r.fullText.length > r.text.length?"\n...":"")}}
-          />
+          <div style={{ fontSize:13, color:"#2a1f0e", lineHeight:1.85, whiteSpace:"pre-wrap", maxHeight:200, overflowY:"auto", background:"#faf7f0", borderRadius:6, padding:"8px 10px" }} dangerouslySetInnerHTML={{__html:hi(r.text)+(r.fullText && r.fullText.length > r.text.length?"\n...":"")}} />
         </div>
       ))}
     </div>
   );
 }
 
+// ── SYSTEMS PAGE ─────────────────────────────────────────
 function SystemsPage({ systems, setSystems, toast }) {
   const [viewIdx, setViewIdx] = useState(null);
-
-  const del = i => {
-    if (!confirm(`حذف "${systems[i].name}"؟`)) return;
-    setSystems(s=>s.filter((_,j)=>j!==i));
-    toast("🗑 تم الحذف");
-  };
-
-  const copy = async (text) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      toast("📋 تم النسخ");
-    } catch {
-      toast("⚠️ استخدم Ctrl+C");
-    }
-  };
+  const del = i => { if (!confirm(`حذف "${systems[i].name}"؟`)) return; setSystems(s=>s.filter((_,j)=>j!==i)); toast("🗑 تم الحذف"); };
+  const copy = text => navigator.clipboard.writeText(text).then(()=>toast("📋 تم النسخ")).catch(()=>toast("⚠️ استخدم Ctrl+C"));
 
   return (
     <div>
-      {systems.length === 0 && (
-        <div style={{ textAlign:"center", padding:"52px 0", color:"#8a7a65" }}>
-          <div style={{ fontSize:40, opacity:.2 }}>📋</div>
-          <div style={{ fontSize:13, marginTop:8 }}>لم تُضف أنظمة بعد — انقر "+ إضافة نظام"</div>
-        </div>
-      )}
-
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))", gap:12 }}>
+      {systems.length === 0 && <div style={{ textAlign:"center", padding:"52px 0", color:"#8a7a65" }}><div style={{ fontSize:40, opacity:.2 }}>📋</div><div style={{ fontSize:13, marginTop:8 }}>لم تُضَف أنظمة — انقر "+ إضافة نظام" أعلاه</div></div>}
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:12 }}>
         {systems.map((s,i) => (
-          <div key={s.id} style={{ ...S.card, padding:16 }}>
+          <div key={s.id} style={{ ...S.card, padding:16, transition:"all .2s" }}
+            onMouseEnter={e=>{e.currentTarget.style.borderColor="rgba(184,146,42,0.5)";e.currentTarget.style.boxShadow="0 4px 16px rgba(0,0,0,0.07)";}}
+            onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(184,146,42,0.2)";e.currentTarget.style.boxShadow="none";}}>
             <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:9 }}>
               <span style={{ fontSize:22 }}>📋</span>
-              <button onClick={()=>del(i)} style={{ background:"none", border:"none", cursor:"pointer", color:"#8a7a65", fontSize:15, padding:"2px 6px", borderRadius:5 }}>
-                🗑
-              </button>
+              <button onClick={()=>del(i)} style={{ background:"none", border:"none", cursor:"pointer", color:"#8a7a65", fontSize:15, padding:"2px 6px", borderRadius:5 }}>🗑</button>
             </div>
             <div style={{ fontSize:13, fontWeight:800, color:"#2a1f0e", marginBottom:4 }}>{s.name}</div>
-            <div style={{ fontSize:10.5, color:"#8a7a65" }}>📅 {s.date}{s.note ? " · " + s.note : ""}</div>
-            <div style={{ fontSize:11.5, color:"#5a4a35", marginTop:7, lineHeight:1.65, background:"#faf7f0", borderRadius:6, padding:"7px 9px", maxHeight:70, overflow:"hidden" }}>
-              {String(s.text || "").substring(0,180)}{String(s.text || "").length>180?"...":""}
+            <div style={{ fontSize:10.5, color:"#8a7a65" }}>📅 {s.date}{s.note && " · "+s.note}</div>
+            <div style={{ fontSize:11.5, color:"#5a4a35", marginTop:7, lineHeight:1.65, background:"#faf7f0", borderRadius:6, padding:"7px 9px", maxHeight:68, overflow:"hidden" }}>
+              {s.text.substring(0,160)}{s.text.length>160?"...":""}
             </div>
-            <button onClick={()=>setViewIdx(i)} style={{ ...S.btn, ...S.btnO, width:"100%", justifyContent:"center", fontSize:12, padding:"7px", marginTop:10 }}>
-              👁 عرض ونسخ
-            </button>
+            <button onClick={()=>setViewIdx(i)} style={{ ...S.btn, ...S.btnO, width:"100%", justifyContent:"center", fontSize:12, padding:"7px", marginTop:10 }}>👁 عرض ونسخ</button>
           </div>
         ))}
       </div>
-
       {viewIdx !== null && systems[viewIdx] && (
         <Modal open title={systems[viewIdx].name} onClose={()=>setViewIdx(null)} wide>
-          <div style={{ background:"#faf7f0", borderRadius:9, padding:"16px 18px", fontSize:13.5, lineHeight:2, color:"#2a1f0e", maxHeight:"58vh", overflowY:"auto", whiteSpace:"pre-wrap", wordBreak:"break-word" }}>
-            {systems[viewIdx].text}
-          </div>
+          <div style={{ background:"#faf7f0", borderRadius:9, padding:"16px 18px", fontSize:13.5, lineHeight:2, color:"#2a1f0e", maxHeight:"58vh", overflowY:"auto", whiteSpace:"pre-wrap", wordBreak:"break-word" }}>{systems[viewIdx].text}</div>
           <div style={{ display:"flex", gap:9, marginTop:16, paddingTop:14, borderTop:"1px solid rgba(184,146,42,0.15)" }}>
             <button onClick={()=>copy(systems[viewIdx].text)} style={{ ...S.btn, ...S.btnP }}>📋 نسخ النص كاملاً</button>
             <button onClick={()=>setViewIdx(null)} style={{ ...S.btn, ...S.btnO }}>إغلاق</button>
@@ -1081,83 +566,49 @@ function SystemsPage({ systems, setSystems, toast }) {
   );
 }
 
+// ── BANK PAGE ────────────────────────────────────────────
 function BankPage({ bank, setBank, bankFilter, setBankFilter, toast }) {
   const [viewIdx, setViewIdx] = useState(null);
-  const tc = {
-    حكم:{bg:"rgba(34,197,94,0.1)",c:"#16a34a"},
-    دفع:{bg:"rgba(59,130,246,0.1)",c:"#2563eb"},
-    صيغة:{bg:"rgba(184,146,42,0.1)",c:"#b8922a"},
-    ملاحظة:{bg:"rgba(239,68,68,0.1)",c:"#dc2626"}
-  };
-
+  const tc = { حكم:{bg:"rgba(34,197,94,0.1)",c:"#16a34a"}, دفع:{bg:"rgba(59,130,246,0.1)",c:"#2563eb"}, صيغة:{bg:"rgba(184,146,42,0.1)",c:"#b8922a"}, ملاحظة:{bg:"rgba(239,68,68,0.1)",c:"#dc2626"} };
   const filtered = bankFilter==="all" ? bank : bank.filter(b=>b.type===bankFilter);
-
-  const copy = async (text) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      toast("📋 تم النسخ");
-    } catch {
-      toast("⚠️ استخدم Ctrl+C");
-    }
-  };
-
-  const del = i => {
-    if (!confirm(`حذف "${bank[i].title}"؟`)) return;
-    setBank(b=>b.filter((_,j)=>j!==i));
-    toast("🗑 تم الحذف");
-  };
+  const copy = text => navigator.clipboard.writeText(text).then(()=>toast("📋 تم النسخ")).catch(()=>toast("⚠️ استخدم Ctrl+C"));
+  const del = i => { if (!confirm(`حذف "${bank[i].title}"؟`)) return; setBank(b=>b.filter((_,j)=>j!==i)); toast("🗑 تم الحذف"); };
 
   return (
     <div>
-      <div style={{ display:"flex", borderRadius:8, overflow:"hidden", border:"1px solid rgba(184,146,42,0.22)", width:"fit-content", marginBottom:18, flexWrap:"wrap" }}>
+      <div style={{ display:"flex", borderRadius:8, overflow:"hidden", border:"1px solid rgba(184,146,42,0.22)", width:"fit-content", marginBottom:18 }}>
         {[["all","الكل"],["حكم","أحكام"],["دفع","دفوع"],["صيغة","صيغ"],["ملاحظة","ملاحظات"]].map(([v,l]) => (
-          <button
-            key={v}
-            onClick={()=>setBankFilter(v)}
-            style={{ padding:"7px 17px", cursor:"pointer", fontFamily:"'Tajawal',sans-serif", fontSize:13, fontWeight:600, color:bankFilter===v?GOLD_L:"#5a4a35", background:bankFilter===v?INK:"#fff", border:"none" }}
-          >
-            {l}
-          </button>
+          <button key={v} onClick={()=>setBankFilter(v)} style={{ padding:"7px 17px", cursor:"pointer", fontFamily:"'Tajawal',sans-serif", fontSize:13, fontWeight:600, color:bankFilter===v?GOLD_L:"#5a4a35", background:bankFilter===v?INK:"#fff", border:"none" }}>{l}</button>
         ))}
       </div>
-
       {filtered.length === 0 ? (
-        <div style={{ textAlign:"center", padding:"52px 0", color:"#8a7a65" }}>
-          <div style={{ fontSize:40, opacity:.2 }}>🗂</div>
-          <div style={{ fontSize:13, marginTop:8 }}>{bankFilter==="all"?"لا توجد عناصر بعد":"لا توجد عناصر من هذا النوع"}</div>
-        </div>
+        <div style={{ textAlign:"center", padding:"52px 0", color:"#8a7a65" }}><div style={{ fontSize:40, opacity:.2 }}>🗂</div><div style={{ fontSize:13, marginTop:8 }}>{bankFilter==="all"?"لا توجد عناصر بعد":"لا توجد عناصر من هذا النوع"}</div></div>
       ) : (
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(320px,1fr))", gap:12 }}>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:12 }}>
           {filtered.map(b => {
-            const ri = bank.indexOf(b);
-            const c = tc[b.type]||tc["صيغة"];
+            const ri = bank.indexOf(b); const c = tc[b.type]||tc["صيغة"];
             return (
-              <div key={b.id} style={{ ...S.card, padding:15 }}>
+              <div key={b.id} style={{ ...S.card, padding:15, borderRight:"3px solid transparent", transition:"all .18s" }}
+                onMouseEnter={e=>{e.currentTarget.style.borderRightColor=GOLD;e.currentTarget.style.boxShadow="0 4px 16px rgba(0,0,0,0.06)";}}
+                onMouseLeave={e=>{e.currentTarget.style.borderRightColor="transparent";e.currentTarget.style.boxShadow="none";}}>
                 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:6 }}>
                   <span style={{ ...S.tag, background:c.bg, color:c.c }}>{b.type}</span>
                   <span style={{ fontSize:11, color:"#8a7a65" }}>{b.date}</span>
                 </div>
                 <div style={{ fontSize:13, fontWeight:700, color:"#2a1f0e", marginBottom:4 }}>{b.title}</div>
-                <div style={{ fontSize:12, color:"#5a4a35", lineHeight:1.75 }}>{String(b.text || "").substring(0,130)}{String(b.text || "").length>130?"...":""}</div>
+                <div style={{ fontSize:12, color:"#5a4a35", lineHeight:1.65 }}>{b.text.substring(0,110)}{b.text.length>110?"...":""}</div>
                 <div style={{ display:"flex", gap:6, marginTop:9 }}>
-                  <button onClick={()=>setViewIdx(ri)} style={{ ...S.btn, ...S.btnO, flex:1, justifyContent:"center", fontSize:12, padding:"6px" }}>
-                    👁 عرض
-                  </button>
-                  <button onClick={()=>del(ri)} style={{ ...S.btn, ...S.btnD, fontSize:12, padding:"6px 10px" }}>
-                    🗑
-                  </button>
+                  <button onClick={()=>setViewIdx(ri)} style={{ ...S.btn, ...S.btnO, flex:1, justifyContent:"center", fontSize:12, padding:"6px" }}>👁 عرض</button>
+                  <button onClick={()=>del(ri)} style={{ ...S.btn, ...S.btnD, fontSize:12, padding:"6px 10px" }}>🗑</button>
                 </div>
               </div>
             );
           })}
         </div>
       )}
-
       {viewIdx !== null && bank[viewIdx] && (
         <Modal open title={bank[viewIdx].title} onClose={()=>setViewIdx(null)} wide>
-          <div style={{ background:"#faf7f0", borderRadius:9, padding:"16px 18px", fontSize:13.5, lineHeight:2, color:"#2a1f0e", maxHeight:"58vh", overflowY:"auto", whiteSpace:"pre-wrap", wordBreak:"break-word" }}>
-            {bank[viewIdx].text}
-          </div>
+          <div style={{ background:"#faf7f0", borderRadius:9, padding:"16px 18px", fontSize:13.5, lineHeight:2, color:"#2a1f0e", maxHeight:"58vh", overflowY:"auto", whiteSpace:"pre-wrap", wordBreak:"break-word" }}>{bank[viewIdx].text}</div>
           <div style={{ display:"flex", gap:9, marginTop:16, paddingTop:14, borderTop:"1px solid rgba(184,146,42,0.15)" }}>
             <button onClick={()=>copy(bank[viewIdx].text)} style={{ ...S.btn, ...S.btnP }}>📋 نسخ</button>
             <button onClick={()=>setViewIdx(null)} style={{ ...S.btn, ...S.btnO }}>إغلاق</button>
@@ -1168,130 +619,22 @@ function BankPage({ bank, setBank, bankFilter, setBankFilter, toast }) {
   );
 }
 
-function MemoryPage({
-  styleMemory,
-  setStyleMemory,
-  pinnedCase,
-  setPinnedCase,
-  customInstructions,
-  setCustomInstructions,
-  toast
-}) {
-  const resetAll = () => {
-    if (!confirm("هل تريد مسح جميع بيانات الأسلوب والذاكرة المحلية؟")) return;
-    setStyleMemory("");
-    setPinnedCase("");
-    setCustomInstructions("");
-    toast("🧹 تم المسح");
-  };
-
-  const saveStyle = () => {
-    toast("✅ تم حفظ نموذج الأسلوب محلياً");
-  };
-
-  const savePinned = () => {
-    toast("📌 تم حفظ وقائع/تعليمات القضية الحالية");
-  };
-
-  const saveCustom = () => {
-    toast("✅ تم حفظ التعليمات الإضافية");
-  };
-
-  return (
-    <div style={{ display:"grid", gridTemplateColumns:"1fr", gap:16, maxWidth:1000 }}>
-      <div style={{ ...S.card, padding:18 }}>
-        <div style={{ fontSize:14, fontWeight:800, color:"#2a1f0e", marginBottom:8 }}>نموذج الأسلوب المحفوظ</div>
-        <div style={{ fontSize:12, color:"#8a7a65", lineHeight:1.8, marginBottom:10 }}>
-          الصق هنا نموذجاً أو مذكرة أو فقرات تعبّر عن أسلوبك، ليُعاد إرسالها مع كل طلب بوصفها نموذجاً مرجعياً محلياً.
-        </div>
-        <textarea
-          value={styleMemory}
-          onChange={e=>setStyleMemory(e.target.value)}
-          placeholder="الصق هنا نموذجاً من كتابتك القانونية..."
-          style={{ ...S.input, minHeight:220, resize:"vertical", lineHeight:1.8 }}
-        />
-        <div style={{ display:"flex", gap:8, marginTop:10, flexWrap:"wrap" }}>
-          <button onClick={saveStyle} style={{ ...S.btn, ...S.btnP }}>💾 حفظ نموذج الأسلوب</button>
-          <button onClick={()=>setStyleMemory("")} style={{ ...S.btn, ...S.btnO }}>مسح</button>
-        </div>
-      </div>
-
-      <div style={{ ...S.card, padding:18 }}>
-        <div style={{ fontSize:14, fontWeight:800, color:"#2a1f0e", marginBottom:8 }}>وقائع أو تعليمات مثبتة للقضية الحالية</div>
-        <div style={{ fontSize:12, color:"#8a7a65", lineHeight:1.8, marginBottom:10 }}>
-          هذا الحقل مفيد إذا كنت تعمل على قضية واحدة عدة مرات. ضع فيه الوقائع المختصرة أو التعليمات الثابتة، وستبقى مرافقة للطلبات حتى تمسحها.
-        </div>
-        <textarea
-          value={pinnedCase}
-          onChange={e=>setPinnedCase(e.target.value)}
-          placeholder="مثال: النزاع يتعلق بعقد مقاولة... أو المطلوب التركيز على الدفع بعدم تحرير الدعوى..."
-          style={{ ...S.input, minHeight:170, resize:"vertical", lineHeight:1.8 }}
-        />
-        <div style={{ display:"flex", gap:8, marginTop:10, flexWrap:"wrap" }}>
-          <button onClick={savePinned} style={{ ...S.btn, ...S.btnP }}>📌 تثبيت/حفظ</button>
-          <button onClick={()=>setPinnedCase("")} style={{ ...S.btn, ...S.btnO }}>مسح</button>
-        </div>
-      </div>
-
-      <div style={{ ...S.card, padding:18 }}>
-        <div style={{ fontSize:14, fontWeight:800, color:"#2a1f0e", marginBottom:8 }}>تعليمات إضافية دائمة</div>
-        <div style={{ fontSize:12, color:"#8a7a65", lineHeight:1.8, marginBottom:10 }}>
-          مثال: "لا تذكر رقم مادة إلا من نص مرفوع" أو "قدّم الدفوع الشكلية أولاً" أو "تجنب الإطالة".
-        </div>
-        <textarea
-          value={customInstructions}
-          onChange={e=>setCustomInstructions(e.target.value)}
-          placeholder="اكتب هنا تعليماتك الثابتة الإضافية..."
-          style={{ ...S.input, minHeight:160, resize:"vertical", lineHeight:1.8 }}
-        />
-        <div style={{ display:"flex", gap:8, marginTop:10, flexWrap:"wrap" }}>
-          <button onClick={saveCustom} style={{ ...S.btn, ...S.btnP }}>✅ حفظ التعليمات</button>
-          <button onClick={()=>setCustomInstructions("")} style={{ ...S.btn, ...S.btnO }}>مسح</button>
-        </div>
-      </div>
-
-      <div style={{ ...S.card, padding:18, border:"1px solid rgba(239,68,68,0.18)", background:"rgba(239,68,68,0.03)" }}>
-        <div style={{ fontSize:14, fontWeight:800, color:"#7f1d1d", marginBottom:8 }}>إعادة ضبط</div>
-        <div style={{ fontSize:12, color:"#7f1d1d", lineHeight:1.8, marginBottom:10 }}>
-          يمسح نموذج الأسلوب، والوقائع المثبتة، والتعليمات الإضافية المحلية فقط.
-        </div>
-        <button onClick={resetAll} style={{ ...S.btn, ...S.btnD }}>🧹 مسح الكل</button>
-      </div>
-    </div>
-  );
-}
-
+// ── MODALS ───────────────────────────────────────────────
 function AddSysModal({ open, onClose, setSystems, toast }) {
-  const [name, setName] = useState("");
-  const [text, setText] = useState("");
-  const [note, setNote] = useState("");
-
+  const [name, setName] = useState(""); const [text, setText] = useState(""); const [note, setNote] = useState("");
   const save = () => {
     if (!name.trim()) { toast("⚠️ أدخل اسم النظام"); return; }
     if (!text.trim()) { toast("⚠️ الصق نص النظام"); return; }
     setSystems(s => [{ id:Date.now(), name:name.trim(), text:text.trim(), note:note.trim(), date:today() }, ...s]);
     setName(""); setText(""); setNote(""); onClose(); toast("✅ تم حفظ النظام");
   };
-
   return (
     <Modal open={open} onClose={onClose} title="إضافة نظام جديد">
-      <Fg label="اسم النظام *">
-        <input value={name} onChange={e=>setName(e.target.value)} placeholder="مثال: نظام العمل السعودي" style={S.input} autoFocus />
-      </Fg>
-
+      <Fg label="اسم النظام *"><input value={name} onChange={e=>setName(e.target.value)} placeholder="مثال: نظام العمل السعودي" style={S.input} autoFocus /></Fg>
       <Fg label="النص الكامل للنظام *">
-        <textarea
-          value={text}
-          onChange={e=>setText(e.target.value)}
-          placeholder={"الصق نص النظام كاملاً هنا\n\nالمادة الأولى: ...\nالمادة الثانية: ..."}
-          style={{ ...S.input, minHeight:260, resize:"vertical", lineHeight:1.75 }}
-        />
+        <textarea value={text} onChange={e=>setText(e.target.value)} placeholder={"الصق نص النظام كاملاً هنا\nيمكنك نسخه من PDF أو Word أو أي مصدر...\n\nالمادة الأولى: ...\nالمادة الثانية: ..."} style={{ ...S.input, minHeight:260, resize:"vertical", lineHeight:1.75 }} />
       </Fg>
-
-      <Fg label="ملاحظة (اختياري)" last>
-        <input value={note} onChange={e=>setNote(e.target.value)} placeholder="مثال: صدر بالمرسوم الملكي رقم..." style={S.input} />
-      </Fg>
-
+      <Fg label="ملاحظة (اختياري)" last><input value={note} onChange={e=>setNote(e.target.value)} placeholder="مثال: صدر بالمرسوم الملكي رقم..." style={S.input} /></Fg>
       <div style={{ display:"flex", gap:9, marginTop:18, paddingTop:14, borderTop:"1px solid rgba(184,146,42,0.15)" }}>
         <button onClick={save} style={{ ...S.btn, ...S.btnP }}>✓ حفظ النظام</button>
         <button onClick={onClose} style={{ ...S.btn, ...S.btnO }}>إلغاء</button>
@@ -1301,33 +644,18 @@ function AddSysModal({ open, onClose, setSystems, toast }) {
 }
 
 function AddBankModal({ open, onClose, setBank, toast }) {
-  const [type, setType] = useState("حكم");
-  const [title, setTitle] = useState("");
-  const [text, setText] = useState("");
-
+  const [type, setType] = useState("حكم"); const [title, setTitle] = useState(""); const [text, setText] = useState("");
   const save = () => {
     if (!title.trim()) { toast("⚠️ أدخل عنواناً"); return; }
     if (!text.trim()) { toast("⚠️ أدخل المحتوى"); return; }
     setBank(b => [{ id:Date.now(), type, title:title.trim(), text:text.trim(), date:today() }, ...b]);
     setTitle(""); setText(""); setType("حكم"); onClose(); toast("✅ تم الحفظ");
   };
-
   return (
     <Modal open={open} onClose={onClose} title="إضافة عنصر لبنك الخبرة">
-      <Fg label="النوع">
-        <select value={type} onChange={e=>setType(e.target.value)} style={S.input}>
-          {["حكم","دفع","صيغة","ملاحظة"].map(x=><option key={x}>{x}</option>)}
-        </select>
-      </Fg>
-
-      <Fg label="العنوان *">
-        <input value={title} onChange={e=>setTitle(e.target.value)} placeholder="عنوان مختصر ودقيق" style={S.input} autoFocus />
-      </Fg>
-
-      <Fg label="المحتوى *" last>
-        <textarea value={text} onChange={e=>setText(e.target.value)} placeholder="أدخل النص..." style={{ ...S.input, minHeight:130, resize:"vertical", lineHeight:1.75 }} />
-      </Fg>
-
+      <Fg label="النوع"><select value={type} onChange={e=>setType(e.target.value)} style={S.input}>{["حكم","دفع","صيغة","ملاحظة"].map(x=><option key={x}>{x}</option>)}</select></Fg>
+      <Fg label="العنوان *"><input value={title} onChange={e=>setTitle(e.target.value)} placeholder="عنوان مختصر ودقيق" style={S.input} autoFocus /></Fg>
+      <Fg label="المحتوى *" last><textarea value={text} onChange={e=>setText(e.target.value)} placeholder="أدخل النص..." style={{ ...S.input, minHeight:130, resize:"vertical", lineHeight:1.75 }} /></Fg>
       <div style={{ display:"flex", gap:9, marginTop:18, paddingTop:14, borderTop:"1px solid rgba(184,146,42,0.15)" }}>
         <button onClick={save} style={{ ...S.btn, ...S.btnP }}>✓ حفظ</button>
         <button onClick={onClose} style={{ ...S.btn, ...S.btnO }}>إلغاء</button>
@@ -1338,35 +666,23 @@ function AddBankModal({ open, onClose, setBank, toast }) {
 
 function SettingsModal({ open, onClose, apiKey, setApiKey, toast }) {
   const [k, setK] = useState("");
-
   useEffect(() => { if (open) setK(apiKey); }, [open, apiKey]);
-
   const save = () => {
     if (!k.trim()) { toast("⚠️ أدخل المفتاح"); return; }
     if (!k.trim().startsWith("sk-ant")) { toast("⚠️ المفتاح يبدأ بـ sk-ant"); return; }
     localStorage.setItem(STORAGE.key, k.trim());
-    setApiKey(k.trim());
-    onClose();
-    toast("✅ تم حفظ المفتاح");
+    setApiKey(k.trim()); onClose(); toast("✅ تم حفظ المفتاح");
   };
-
   return (
     <Modal open={open} onClose={onClose} title="⚙️ إعدادات API">
       <Fg label="مفتاح Anthropic API *">
         <input type="password" value={k} onChange={e=>setK(e.target.value)} placeholder="sk-ant-api03-..." style={S.input} autoFocus />
       </Fg>
-
       <div style={{ fontSize:12, color:"#8a7a65", lineHeight:1.75, marginBottom:8 }}>
-        🔒 المفتاح يُحفظ في متصفحك فقط داخل هذه الصفحة.<br/>
-        احصل على مفتاح من:
-        {" "}
-        <a href="https://console.anthropic.com/settings/keys" target="_blank" style={{ color:GOLD }}>
-          console.anthropic.com/settings/keys
-        </a>
+        🔒 المفتاح يُحفظ في متصفحك فقط.<br/>
+        احصل على مفتاح من: <a href="https://console.anthropic.com/settings/keys" target="_blank" style={{ color:GOLD }}>console.anthropic.com/settings/keys</a>
       </div>
-
       {apiKey && <div style={{ fontSize:12, color:"#16a34a", marginBottom:4 }}>✅ مفتاح محفوظ حالياً</div>}
-
       <div style={{ display:"flex", gap:9, marginTop:14, paddingTop:14, borderTop:"1px solid rgba(184,146,42,0.15)" }}>
         <button onClick={save} style={{ ...S.btn, ...S.btnP }}>✓ حفظ المفتاح</button>
         <button onClick={onClose} style={{ ...S.btn, ...S.btnO }}>إغلاق</button>
@@ -1375,7 +691,8 @@ function SettingsModal({ open, onClose, apiKey, setApiKey, toast }) {
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(React.createElement(App));
 </script>
 </body>
